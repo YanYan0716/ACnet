@@ -9,4 +9,4 @@
  
  https://arxiv.org/pdf/1909.11378.pdf
  
- pytorch
+ tensorflow==2.3.0
