@@ -68,10 +68,16 @@ class BTree(keras.layers.Layer):
 
         # label pred
         labelPred1 = self.p_1(features_result[2][0])
+        AvgLabel = labelPred1
         labelPred2 = self.p_2(features_result[2][1])
+        AvgLabel += labelPred2
         labelPred3 = self.p_3(features_result[2][2])
+        AvgLabel += labelPred3
         labelPred4 = self.p_4(features_result[2][3])
-        return route_result, features_result, labelPred1, labelPred2, labelPred3, labelPred4
+        AvgLabel += labelPred4
+
+        AvgLabel = AvgLabel / 4.
+        return labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel
 
 
 if __name__ == '__main__':

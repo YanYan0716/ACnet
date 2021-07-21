@@ -1,9 +1,10 @@
 import tensorflow as tf
+import tensorflow.keras as keras
 
 
-from Dataset import dataset
-import config
+class CustomFit(keras.Model):
+    def __init__(self, model):
+        super(CustomFit, self).__init__()
 
-
-def train():
-    ds_train = dataset(config.DATA_PATH)
+    def call(self, inputs, training=None, mask=None):
+        pass
