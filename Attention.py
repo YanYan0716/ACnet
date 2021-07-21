@@ -32,7 +32,7 @@ class Attention(keras.layers.Layer):
 
 
 if __name__ == '__main__':
-    img = tf.random.normal((2, 64, 64, 3))
-    a = Attention(5, (64, 64))
+    img = tf.random.normal((2, 28, 28, 512))
+    a = Attention(512, (28, 28))
     y = a(img)
     print(y.shape)

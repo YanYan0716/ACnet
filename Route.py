@@ -104,7 +104,7 @@ class Route(keras.layers.Layer):
 
 if __name__ == '__main__':
     # test GlobalContext
-    img = tf.random.normal((2, 64, 64, 3))
+    img = tf.random.normal((2, 28, 28, 512))
     # gcLayer = GlobalContext(inplanes=1, ratio=2)
     # y = gcLayer(img)
     # print(y.shape)
