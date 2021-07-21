@@ -20,6 +20,6 @@ def ACnet(input_shape=(448, 448, 3), inplanes=1, ratio=2, afilter=512, size=(28,
 
 if __name__ == '__main__':
     img = tf.random.normal((2, 448, 448, 3))
-    model = ACnet().model()
+    model = ACnet()
     y = model(img)
     print(y.shape)
