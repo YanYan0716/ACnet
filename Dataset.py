@@ -31,7 +31,7 @@ def dataset(dataPath):
         .map(readImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
         .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
         .cache()\
-        .shuffle(5000)\
+        .shuffle(1000)\
         .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
         .batch(config.BATCH_SIZE)\
 
