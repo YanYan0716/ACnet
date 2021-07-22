@@ -1,13 +1,13 @@
 import tensorflow as tf
 import tensorflow.keras as keras
-from tensorflow.keras.losses import CategoricalCrossentropy
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
 
 
 """与paper不同，仅使用CE loss"""
 class myLoss(keras.losses.Loss):
     def __init__(self, alpha=1., betha=1.):
         super(myLoss, self).__init__()
-        self.loss = CategoricalCrossentropy()
+        self.loss = SparseCategoricalCrossentropy()
         self.alpha = alpha
         self.betha = betha
 
