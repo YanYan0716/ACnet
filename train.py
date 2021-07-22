@@ -16,7 +16,7 @@ ds_train = dataset(config.DATA_PATH)
 
 # model
 model = ACnet(
-    input_shape=(448, 448, 3),
+    input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=1,
     ratio=2,
     afilter=512,

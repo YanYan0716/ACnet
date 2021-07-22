@@ -11,11 +11,12 @@ import config
 def readImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
-    img = tf.image.resize(img, (config.IMG_SIZE, config.IMG_SIZE))
+    img = tf.image.resize(img, (256, 256))
     return img, label
 
 
 def augment(img, label):
+    img = tf.image.random_crop(img, [config.IMG_SIZE, config.IMG_SIZE, 3])
     img = tf.image.flip_left_right(image=img)
     img = (img / 255.0)
     return img, label
