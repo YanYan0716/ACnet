@@ -29,6 +29,6 @@ acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=keras.optimizers.SGD(learning_rate=0.005, momentum=0.005),
-    loss=myLoss
+    loss=loss
 )
 training.fit()
