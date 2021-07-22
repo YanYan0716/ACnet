@@ -28,10 +28,13 @@ def dataset(dataPath):
 
     ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
     ds_train = ds_train\
-        .map(readImg)\
-        .map(augment)\
+        .map(readImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+        .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+        .cache()\
+        .shuffle(5000)\
+        .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
         .batch(config.BATCH_SIZE)\
-        .shuffle(10)
+
 
     return ds_train
 
