@@ -1,3 +1,5 @@
+import os
+os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
 
@@ -31,4 +33,11 @@ training.compile(
     optimizer=keras.optimizers.SGD(learning_rate=0.005, momentum=0.005),
     loss=loss
 )
+
+print('prepared ...')
+print('==================================')
+for epoch in range(config.MAX_EPOCH):
+    for (img, label) in ds_train:
+        training.train_step(data=(img, label))
+    print('epoch:{epoch}')
 # training.fit()
