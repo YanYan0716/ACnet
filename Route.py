@@ -1,4 +1,5 @@
 import os
+
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -9,14 +10,16 @@ reference:
 paper:
     https://arxiv.org/pdf/1904.11492.pdf
 '''
+
+
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add',), size=28, channel=512):
+    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('',), size=28, channel=512):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
         valid_fusion_types = ['channel_add', 'channel_mul']
-        assert all([f in valid_fusion_types for f in fusion_types])
-        assert len(fusion_types) > 0, 'at least one fusion should be used'
+        # assert all([f in valid_fusion_types for f in fusion_types])
+        # assert len(fusion_types) > 0, 'at least one fusion should be used'
         self.inplanes = inplanes
         self.ratio = ratio
         self.planes = int(inplanes * ratio)
@@ -33,7 +36,12 @@ class GlobalContext(keras.layers.Layer):
             )
             self.softmax = keras.layers.Softmax(axis=1)
         else:
-            self.avg_pool = keras.layers.AveragePooling2D()
+            self.avg_pool = keras.layers.Conv2D(
+                filters=channel,
+                kernel_size=1,
+                kernel_initializer='random_normal',
+                # activation='relu'
+            )
         if 'channel_add' in fusion_types:
             initializer = tf.keras.initializers.Constant(0.)
             self.channel_add_conv = keras.Sequential([
@@ -63,7 +71,7 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     # bias_initializer=initializer
                 ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3]),
+                keras.layers.LayerNormalization(axis=3, center=True, scale=True),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
@@ -75,20 +83,14 @@ class GlobalContext(keras.layers.Layer):
         else:
             self.channel_mul_conv = None
 
-        # self.reset_parameters()
-
-    def reset_parameters(self):
-        if self.pooling_type == 'att':
-            pass
-
     def spatical_pool(self, x):
         if self.pooling_type == 'att':
             input_x = x
-            input_x = tf.reshape(input_x, (-1, self.size*self.size, self.channel))
+            input_x = tf.reshape(input_x, (-1, self.size * self.size, self.channel))
             input_x = tf.transpose(input_x, [0, 2, 1])
 
             context_mask = self.conv_mask(x)
-            context_mask = tf.reshape(context_mask, (-1, self.size*self.size))
+            context_mask = tf.reshape(context_mask, (-1, self.size * self.size))
             context_mask = self.softmax(context_mask)
             context_mask = tf.expand_dims(context_mask, axis=-1)
 
@@ -124,8 +126,8 @@ class Route(keras.layers.Layer):
     def call(self, inputs, **kwargs):
         x = inputs
         x_ = self.globalContext(x)
-        out = self.globalAvgPooling(x+x_)
-        out = tf.sign(out)*tf.math.sqrt(tf.sign(out)*out)
+        out = self.globalAvgPooling(x + x_)
+        out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out)
         out = self.l2Norm(out)
         out = self.dense(out)
         return out
