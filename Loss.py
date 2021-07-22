@@ -18,4 +18,4 @@ class myLoss(keras.losses.Loss):
         d = self.loss(y_true, y_pred[3]) * self.alpha
         all = self.loss(y_true, y_pred[4]) * self.betha
         
-        return a+b+c+d+all
+        return (a+b+c+d+all)/5

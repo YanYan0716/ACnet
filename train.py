@@ -22,7 +22,9 @@ model = ACnet(
     afilter=512,
     size=(28, 28),
     pfilter=8192,
-    classes=config.CLASSES_NUM)
+    classes=config.CLASSES_NUM,
+    firstStage=config.FIRST_SEAGE
+)
 
 # loss
 loss = myLoss(alpha=1., betha=1.)
@@ -30,8 +32,9 @@ loss = myLoss(alpha=1., betha=1.)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=keras.optimizers.SGD(learning_rate=0.005, momentum=0.005),
-    loss=loss
+    optimizer=keras.optimizers.SGD(learning_rate=1., momentum=0.9, ),
+    loss=loss,
+    metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
 
 print('prepared ...')
