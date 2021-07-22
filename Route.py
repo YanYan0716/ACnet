@@ -28,8 +28,8 @@ class GlobalContext(keras.layers.Layer):
             self.conv_mask = keras.layers.Conv2D(
                 filters=1,
                 kernel_size=1,
-                kernel_initializer='he_normal',
-                activation='relu'
+                # kernel_initializer='he_normal',
+                # activation='relu'
             )
             self.softmax = keras.layers.Softmax(axis=1)
         else:
@@ -48,8 +48,8 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer=initializer,
-                    bias_initializer=initializer
+                    # kernel_initializer=initializer,
+                    # bias_initializer=initializer
                 )
             ])
         else:
