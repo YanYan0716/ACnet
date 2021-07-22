@@ -125,6 +125,7 @@ class Route(keras.layers.Layer):
         x = inputs
         x_ = self.globalContext(x)
         out = self.globalAvgPooling(x+x_)
+        out = tf.sign(out)*tf.math.sqrt(tf.sign(out)*out)
         out = self.l2Norm(out)
         out = self.dense(out)
         return out
@@ -142,4 +143,4 @@ if __name__ == '__main__':
     route = Route(inplanes=1, ratio=2)
     model = keras.Model(inputs=inputs, outputs=route(inputs))
     y = model(img)
-    print(y.shape)
+    print(y)
