@@ -13,8 +13,11 @@ import config
 class BTree(keras.layers.Layer):
     def __init__(self, inplanes, ratio, afilter, size, pfilter, classes=config.CLASSES_NUM):
         super(BTree, self).__init__()
+        self.conv_L1 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route1_L1 = Route(inplanes, ratio)
+        self.conv1_L2 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route1_L2 = Route(inplanes, ratio)
+        self.conv2_L2 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route2_L2 = Route(inplanes, ratio)
 
         self.att_1 = Attention(afilter, size)
@@ -40,7 +43,7 @@ class BTree(keras.layers.Layer):
         features_result = [[None], [None, None], [None, None, None, None]]
 
         # 第一层Route
-        left_prob1_l1 = self.route1_L1(inputs)
+        left_prob1_l1 = self.route1_L1(self.conv_L1(inputs))
         right_prob1_l1 = 1 - left_prob1_l1
         route_result[0][0], route_result[0][1] = left_prob1_l1, right_prob1_l1
 
@@ -51,9 +54,9 @@ class BTree(keras.layers.Layer):
         features_result[1][0], features_result[1][1] = left_fts1_l1, right_fts1_l1
 
         # 第二层Route
-        left_prob1_l2 = self.route1_L2(features_result[1][0])
+        left_prob1_l2 = self.route1_L2(self.conv1_L2(features_result[1][0]))
         right_prob1_l2 = 1 - left_prob1_l2
-        left_prob2_l2 = self.route2_L2(features_result[1][1])
+        left_prob2_l2 = self.route2_L2(self.conv2_L2(features_result[1][1]))
         right_prob2_l2 = 1 - left_prob2_l2
         route_result[1][0], route_result[1][1] = left_prob1_l2, right_prob1_l2
         route_result[1][2], route_result[1][3] = left_prob2_l2, right_prob2_l2
