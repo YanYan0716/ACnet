@@ -12,7 +12,7 @@ def readImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
     img = tf.image.resize(img, (256, 256))
-    label = tf.one_hot(label, config.CLASSES_NUM)
+    # label = tf.one_hot(label, config.CLASSES_NUM)
     return img, label
 
 

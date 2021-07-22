@@ -28,7 +28,7 @@ class GlobalContext(keras.layers.Layer):
             self.conv_mask = keras.layers.Conv2D(
                 filters=1,
                 kernel_size=1,
-                # kernel_initializer='he_normal',
+                kernel_initializer='random_normal',
                 # activation='relu'
             )
             self.softmax = keras.layers.Softmax(axis=1)
@@ -40,7 +40,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.planes,
                     kernel_size=1,
-                    # kernel_initializer=initializer,
+                    kernel_initializer='random_normal',
                     # bias_initializer=initializer,
                 ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3]),
@@ -48,7 +48,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    # kernel_initializer=initializer,
+                    kernel_initializer='random_normal',
                     # bias_initializer=initializer
                 )
             ])
@@ -60,7 +60,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.planes,
                     kernel_size=1,
-                    # kernel_initializer=initializer,
+                    kernel_initializer='random_normal',
                     # bias_initializer=initializer
                 ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3]),
@@ -68,7 +68,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer=initializer,
+                    kernel_initializer='random_normal',
                     bias_initializer=initializer
                 )
             ])
