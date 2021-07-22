@@ -9,7 +9,7 @@ class LabelPred(keras.layers.Layer):
         self.net = keras.Sequential([
             keras.layers.BatchNormalization(),
             keras.layers.Conv2D(filters, 1, 1, activation='relu'),
-            keras.layers.GlobalAveragePooling2D(),
+            keras.layers.GlobalMaxPooling2D(),
         ])
         self.l2 = tf.math.l2_normalize
         self.flatten = keras.layers.Flatten()
