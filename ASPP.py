@@ -19,7 +19,7 @@ class ASPP(keras.layers.Layer):
         self.atrous_block12 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=(12, 12), activation='relu')
         self.atrous_block18 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=(18, 18), activation='relu')
 
-        self.conv_1_output = keras.layers.Conv2D(filters, 1, 1)
+        self.conv_1_output = keras.layers.Conv2D(filters, 1, 1, activation='relu')
 
     def call(self, inputs,):
         image_features = self.mean(inputs)
