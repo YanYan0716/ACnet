@@ -40,7 +40,10 @@ training.compile(
 print('prepared ...')
 print('==================================')
 for epoch in range(config.MAX_EPOCH):
+    flag = 0
     for (img, label) in ds_train:
-        training.train_step(data=(img, label))
+        flag += 1
+        result = training.train_step(data=(img, label))
+        print(flag, result)
     print('epoch:{epoch}')
 # training.fit()

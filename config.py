@@ -1,6 +1,6 @@
 DATA_PATH = '/content/train.csv'
 IMG_SIZE = 448
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 CLASSES_NUM = 200
 
 MAX_EPOCH = 100
