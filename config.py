@@ -1,5 +1,4 @@
-DATA_PATH = '../CUB_200_2011/aaa.csv'
-ROOT_PATH = '../CUB_200_2011'
+DATA_PATH = '/content/train.csv'
 IMG_SIZE = 448
 BATCH_SIZE = 4
 
