@@ -13,7 +13,7 @@ paper:
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('',), size=28, channel=512):
+    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('channel_add',), size=28, channel=512):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
@@ -37,7 +37,7 @@ class GlobalContext(keras.layers.Layer):
             self.softmax = keras.layers.Softmax(axis=1)
         else:
             self.avg_pool = keras.layers.Conv2D(
-                filters=channel,
+                filters=512,
                 kernel_size=1,
                 kernel_initializer='random_normal',
                 # activation='relu'
