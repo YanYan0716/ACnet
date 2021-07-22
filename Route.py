@@ -10,7 +10,7 @@ paper:
     https://arxiv.org/pdf/1904.11492.pdf
 '''
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add',)):
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add',), size=28, channel=512):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
@@ -22,6 +22,8 @@ class GlobalContext(keras.layers.Layer):
         self.planes = int(inplanes * ratio)
         self.pooling_type = pooling_type
         self.fusion_types = fusion_types
+        self.size = size
+        self.channel = channel
         if pooling_type == 'att':
             self.conv_mask = keras.layers.Conv2D(filters=1, kernel_size=1,)
             self.softmax = keras.layers.Softmax(axis=1)
@@ -53,19 +55,18 @@ class GlobalContext(keras.layers.Layer):
             pass
 
     def spatical_pool(self, x):
-        batch, height, width, channel = x.shape
         if self.pooling_type == 'att':
             input_x = x
-            input_x = tf.reshape(input_x, (batch, height*width, channel))
+            input_x = tf.reshape(input_x, (-1, self.size*self.size, self.channel))
             input_x = tf.transpose(input_x, [0, 2, 1])
 
             context_mask = self.conv_mask(x)
-            context_mask = tf.reshape(context_mask, (batch, height*width))
+            context_mask = tf.reshape(context_mask, (-1, self.size*self.size))
             context_mask = self.softmax(context_mask)
             context_mask = tf.expand_dims(context_mask, axis=-1)
 
             context = tf.matmul(input_x, context_mask)
-            context = tf.reshape(context, (batch, 1, 1, channel))
+            context = tf.reshape(context, (-1, 1, 1, self.channel))
         else:
             context = self.avg_pool(x)
 
@@ -110,6 +111,8 @@ if __name__ == '__main__':
     # print(y.shape)
 
     # test Route
+    inputs = keras.Input(shape=(28, 28, 512))
     route = Route(inplanes=1, ratio=2)
-    y = route(img)
+    model = keras.Model(inputs=inputs, outputs=route(inputs))
+    y = model(img)
     print(y.shape)
