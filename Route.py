@@ -25,25 +25,52 @@ class GlobalContext(keras.layers.Layer):
         self.size = size
         self.channel = channel
         if pooling_type == 'att':
-            self.conv_mask = keras.layers.Conv2D(filters=1, kernel_size=1,)
+            self.conv_mask = keras.layers.Conv2D(
+                filters=1,
+                kernel_size=1,
+                kernel_initializer='he_normal',
+                activation='relu'
+            )
             self.softmax = keras.layers.Softmax(axis=1)
         else:
             self.avg_pool = keras.layers.AveragePooling2D()
         if 'channel_add' in fusion_types:
+            initializer = tf.keras.initializers.Constant(0.)
             self.channel_add_conv = keras.Sequential([
-                keras.layers.Conv2D(self.planes, kernel_size=1),
+                keras.layers.Conv2D(
+                    self.planes,
+                    kernel_size=1,
+                    # kernel_initializer=initializer,
+                    # bias_initializer=initializer,
+                ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3]),
                 keras.layers.ReLU(),
-                keras.layers.Conv2D(self.inplanes, kernel_size=1)
+                keras.layers.Conv2D(
+                    self.inplanes,
+                    kernel_size=1,
+                    kernel_initializer=initializer,
+                    bias_initializer=initializer
+                )
             ])
         else:
             self.channel_add_conv = None
         if 'channel_mul' in fusion_types:
+            initializer = tf.keras.initializers.Constant(0.)
             self.channel_mul_conv = keras.Sequential([
-                keras.layers.Conv2D(self.planes, kernel_size=1),
+                keras.layers.Conv2D(
+                    self.planes,
+                    kernel_size=1,
+                    # kernel_initializer=initializer,
+                    # bias_initializer=initializer
+                ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3]),
                 keras.layers.ReLU(),
-                keras.layers.Conv2D(self.inplanes, kernel_size=1)
+                keras.layers.Conv2D(
+                    self.inplanes,
+                    kernel_size=1,
+                    kernel_initializer=initializer,
+                    bias_initializer=initializer
+                )
             ])
         else:
             self.channel_mul_conv = None
