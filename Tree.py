@@ -79,7 +79,6 @@ class BTree(keras.layers.Layer):
         labelPred4 = self.p_4(features_result[2][3])
         AvgLabel += (labelPred4*route_result[0][1]*route_result[1][3])
 
-        AvgLabel = AvgLabel / 4.
         return labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel
 
 
