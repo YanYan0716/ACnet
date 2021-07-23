@@ -35,6 +35,7 @@ class Attention(keras.layers.Layer):
         img_fts2 = self.conv2(self.relu(self.conv1(img_fts2)))
         img_fts2 = keras.activations.sigmoid(img_fts2)
         out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
+        out = keras.activations.relu(out)
         return out
 
 
