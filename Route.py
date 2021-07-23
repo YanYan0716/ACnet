@@ -13,7 +13,7 @@ paper:
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('',), size=28, channel=512):
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('',), size=28, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
@@ -37,7 +37,7 @@ class GlobalContext(keras.layers.Layer):
             self.softmax = keras.layers.Softmax(axis=1)
         else:
             self.avg_pool = keras.layers.Conv2D(
-                filters=512,
+                filters=channel,
                 kernel_size=1,
                 kernel_initializer='random_normal',
                 # activation='relu'
@@ -92,7 +92,8 @@ class GlobalContext(keras.layers.Layer):
             context_mask = tf.reshape(context_mask, (-1, self.size * self.size))
             context_mask = self.softmax(context_mask)
             context_mask = tf.expand_dims(context_mask, axis=-1)
-
+            print('===============', context_mask.shape)
+            print(input_x.shape)
             context = tf.matmul(input_x, context_mask)
             context = tf.reshape(context, (-1, 1, 1, self.channel))
         else:
@@ -134,14 +135,14 @@ class Route(keras.layers.Layer):
 
 if __name__ == '__main__':
     # test GlobalContext
-    img = tf.random.normal((2, 28, 28, 512))
-    # gcLayer = GlobalContext(inplanes=1, ratio=2)
-    # y = gcLayer(img)
-    # print(y.shape)
+    img = tf.random.normal((2, 28, 28, 1024))
+    gcLayer = GlobalContext(inplanes=1, ratio=2)
+    y = gcLayer(img)
+    print(y.shape)
 
     # test Route
-    inputs = keras.Input(shape=(28, 28, 512))
-    route = Route(inplanes=1, ratio=2)
-    model = keras.Model(inputs=inputs, outputs=route(inputs))
-    y = model(img)
-    print(y)
+    # inputs = keras.Input(shape=(28, 28, 1024))
+    # route = Route(inplanes=1, ratio=2)
+    # model = keras.Model(inputs=inputs, outputs=route(inputs))
+    # y = model(img)
+    # print(y)
