@@ -1,6 +1,6 @@
-DATA_PATH = '/content/train.csv'
-IMG_SIZE = 224
-BATCH_SIZE = 16
+DATA_PATH = '../input/cub-200-2011/train.csv'
+IMG_SIZE = 448
+BATCH_SIZE = 8
 CLASSES_NUM = 200
 
 MAX_EPOCH = 100

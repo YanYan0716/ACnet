@@ -21,7 +21,7 @@ model = ACnet(
     inplanes=1,
     ratio=2,
     afilter=1024,
-    size=(14, 14),
+    size=(28, 28),
     pfilter=8192,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
@@ -33,7 +33,7 @@ loss = myLoss(alpha=1., betha=1.)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=tfa.optimizers.SGDW(learning_rate=1., momentum=0.9, weight_decay=1e-6),
+    optimizer=tfa.optimizers.SGDW(learning_rate=1., momentum=0.9, weight_decay=5e-6),
     loss=loss,
     metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
