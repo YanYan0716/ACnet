@@ -43,7 +43,6 @@ class GlobalContext(keras.layers.Layer):
                 # activation='relu'
             )
         if 'channel_add' in fusion_types:
-            initializer = tf.keras.initializers.Constant(0.)
             self.channel_add_conv = keras.Sequential([
                 keras.layers.Conv2D(
                     self.planes,
@@ -51,7 +50,7 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     # bias_initializer=initializer,
                 ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3]),
+                keras.layers.LayerNormalization(axis=3, center=True, scale=True),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
