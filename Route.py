@@ -116,9 +116,9 @@ class GlobalContext(keras.layers.Layer):
 
 
 class Route(keras.layers.Layer):
-    def __init__(self, inplanes, ratio):
+    def __init__(self, inplanes, ratio, size, channel):
         super(Route, self).__init__()
-        self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio)
+        self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, size=size, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
         self.l2Norm = tf.math.l2_normalize
         self.dense = keras.layers.Dense(1, activation='sigmoid')
