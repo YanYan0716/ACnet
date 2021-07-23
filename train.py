@@ -2,6 +2,7 @@ import os
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
+import tensorflow_addons as tfa
 
 
 import config
@@ -19,8 +20,8 @@ model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=1,
     ratio=2,
-    afilter=512,
-    size=(28, 28),
+    afilter=1024,
+    size=(14, 14),
     pfilter=8192,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
@@ -32,7 +33,7 @@ loss = myLoss(alpha=1., betha=1.)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=keras.optimizers.SGD(learning_rate=1., momentum=0.9, ),
+    optimizer=tfa.optimizers.SGDW(learning_rate=1., momentum=0.9, weight_decay=1e-6),
     loss=loss,
     metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )

@@ -25,7 +25,7 @@ def ACnet(
         backbone.trainable = False
     tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
     my_input = backbone.layers[0].input
-    output = backbone.get_layer('conv3_block4_out').output
+    output = backbone.get_layer('conv4_block6_out').output
     # output = keras.layers.AveragePooling2D(pool_size=(2, 2), strides=2)(output)
     output = tree(output)
     all_model = keras.Model(inputs=my_input, outputs=output)
