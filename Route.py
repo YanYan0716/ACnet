@@ -13,7 +13,7 @@ paper:
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('',), size=28, channel=1024):
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add','channel_mul'), size=28, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
@@ -92,8 +92,6 @@ class GlobalContext(keras.layers.Layer):
             context_mask = tf.reshape(context_mask, (-1, self.size * self.size))
             context_mask = self.softmax(context_mask)
             context_mask = tf.expand_dims(context_mask, axis=-1)
-            print('===============', context_mask.shape)
-            print(input_x.shape)
             context = tf.matmul(input_x, context_mask)
             context = tf.reshape(context, (-1, 1, 1, self.channel))
         else:
@@ -116,9 +114,9 @@ class GlobalContext(keras.layers.Layer):
 
 
 class Route(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, size, channel):
+    def __init__(self, inplanes, ratio, channel):
         super(Route, self).__init__()
-        self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, size=size, channel=channel)
+        self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
         self.l2Norm = tf.math.l2_normalize
         self.dense = keras.layers.Dense(1, activation='sigmoid')

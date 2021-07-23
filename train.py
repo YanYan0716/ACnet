@@ -45,7 +45,7 @@ for epoch in range(config.MAX_EPOCH):
     for (img, label) in ds_train:
         flag += 1
         result = training.train_step(data=(img, label))
-        if flag % 50 == 0:
+        if flag % 5 == 0:
             print(flag, result)
     print('epoch:{epoch}')
 # training.fit()
