@@ -11,9 +11,9 @@ paper:
     https://arxiv.org/pdf/1904.11492.pdf
 '''
 
-
+import config
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add','channel_mul'), size=28, channel=1024):
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add','channel_mul'), size=config.FTS_SIZE, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
@@ -101,7 +101,6 @@ class GlobalContext(keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         context = self.spatical_pool(inputs)
-
         out = inputs
         if self.channel_mul_conv is not None:
             channel_mul_term = keras.activations.sigmoid(self.channel_mul_conv(context))
@@ -133,14 +132,14 @@ class Route(keras.layers.Layer):
 
 if __name__ == '__main__':
     # test GlobalContext
-    img = tf.random.normal((2, 28, 28, 1024))
-    gcLayer = GlobalContext(inplanes=1, ratio=2)
+    img = tf.random.normal((5, 14, 14, 1024))
+    gcLayer = GlobalContext(inplanes=1, ratio=2, channel=1024)
     y = gcLayer(img)
     print(y.shape)
 
     # test Route
-    # inputs = keras.Input(shape=(28, 28, 1024))
-    # route = Route(inplanes=1, ratio=2)
+    # inputs = keras.Input(shape=(14, 14, 1024))
+    # route = Route(inplanes=1, ratio=2, channel=1024)
     # model = keras.Model(inputs=inputs, outputs=route(inputs))
     # y = model(img)
     # print(y)

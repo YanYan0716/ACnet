@@ -21,7 +21,7 @@ model = ACnet(
     inplanes=1,
     ratio=2,
     afilter=1024,
-    size=(28, 28),
+    size=(config.FTS_SIZE, config.FTS_SIZE),
     pfilter=8192,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
@@ -49,4 +49,3 @@ for epoch in range(config.MAX_EPOCH):
             print(flag, result)
     print('epoch:{epoch}')
 # training.fit()
-tf.te
