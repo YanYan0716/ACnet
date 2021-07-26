@@ -39,12 +39,12 @@ class GlobalContext(keras.layers.Layer):
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
-                keras.layers.Conv2D(
-                    self.planes,
-                    kernel_size=1,
-                    kernel_initializer='random_normal',
-                    # bias_initializer=initializer,
-                ),
+                # keras.layers.Conv2D(
+                #     self.planes,
+                #     kernel_size=1,
+                #     kernel_initializer='random_normal',
+                #     # bias_initializer=initializer,
+                # ),
                 keras.layers.LayerNormalization(axis=[1,2,3],epsilon=1e-3),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
@@ -99,7 +99,7 @@ class GlobalContext(keras.layers.Layer):
         out = inputs
         if self.channel_mul_conv is not None:
             channel_mul_term = keras.activations.sigmoid(self.channel_mul_conv(context))
-            out = out * channel_mul_term
+            out = inputs * channel_mul_term
         if self.channel_add_conv is not None:
             channel_add_term = self.channel_add_conv(context)
             out = out + channel_add_term
