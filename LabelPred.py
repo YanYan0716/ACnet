@@ -17,8 +17,8 @@ class LabelPred(keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         out = self.net(inputs)
-        out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out)
-        out = self.flatten(self.l2(out))
+        out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out+1e-12)
+        out = self.flatten(self.l2(out, axis=-1))
         out = self.dense(out)
         return out
 

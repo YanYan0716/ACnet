@@ -125,7 +125,7 @@ class Route(keras.layers.Layer):
         x_ = self.globalContext(x)
         out = self.globalAvgPooling(x + x_)
         out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out)
-        out = self.l2Norm(out)
+        out = self.l2Norm(out, axis=-1)
         out = self.dense(out)
         return out
 

@@ -21,7 +21,7 @@ class ASPP(keras.layers.Layer):
 
         self.conv_1_output = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal')
 
-    def call(self, inputs,):
+    def call(self, inputs):
         image_features = self.mean(inputs)
         image_features = tf.expand_dims(image_features, axis=1)
         image_features = tf.expand_dims(image_features, axis=1)
