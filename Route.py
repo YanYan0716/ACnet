@@ -18,8 +18,8 @@ class GlobalContext(keras.layers.Layer):
         assert pooling_type in ['avg', 'att']
         assert isinstance(fusion_types, (list, tuple))
         valid_fusion_types = ['channel_add', 'channel_mul']
-        # assert all([f in valid_fusion_types for f in fusion_types])
-        # assert len(fusion_types) > 0, 'at least one fusion should be used'
+        assert all([f in valid_fusion_types for f in fusion_types])
+        assert len(fusion_types) > 0, 'at least one fusion should be used'
         self.inplanes = inplanes
         self.ratio = ratio
         self.planes = int(inplanes * ratio)

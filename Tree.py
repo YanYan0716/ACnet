@@ -85,5 +85,5 @@ class BTree(keras.layers.Layer):
 if __name__ == '__main__':
     img = tf.random.normal((4, 14, 14, 1024))
     tree = BTree(inplanes=1, ratio=2, afilter=1024, size=(14, 14), pfilter=8192, classes=200)
-    y = tree(img)
-    print('ok')
+    # y = tree(img)
+    # print('ok')
