@@ -17,6 +17,7 @@ class Attention(keras.layers.Layer):
         self.BN_2 = keras.layers.BatchNormalization(momentum=0.9)
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
+        self.conv1 = keras.layers.Conv2D(filters//16, 1, 1, kernel_initializer='random_normal', activation='relu')
         self.conv2 = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal', activation='sigmoid')
 
         self.ASPP = ASPP(filters, size)
