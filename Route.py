@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
     # test Route
     inputs = keras.Input(shape=(14, 14, 1024))
-    route = Route(inplanes=1, ratio=2, channel=1024)
+    route = Route(inplanes=512, ratio=1, channel=512)
     model = keras.Model(inputs=inputs, outputs=route(inputs))
     y = model(img)
     print(y)
