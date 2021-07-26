@@ -36,12 +36,7 @@ class GlobalContext(keras.layers.Layer):
             )
             self.softmax = keras.layers.Softmax(axis=1)
         else:
-            self.avg_pool = keras.layers.Conv2D(
-                filters=channel,
-                kernel_size=1,
-                kernel_initializer='random_normal',
-                # activation='relu'
-            )
+            self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
                 keras.layers.Conv2D(
@@ -96,7 +91,7 @@ class GlobalContext(keras.layers.Layer):
             context = tf.reshape(context, (-1, 1, 1, self.channel))
         else:
             context = self.avg_pool(x)
-
+            context = tf.reshape(context, (-1, 1, 1, self.channel))
         return context
 
     def call(self, inputs, **kwargs):
