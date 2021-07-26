@@ -13,7 +13,10 @@ class LabelPred(keras.layers.Layer):
         ])
         self.l2 = tf.math.l2_normalize
         self.flatten = keras.layers.Flatten()
-        self.dense = keras.layers.Dense(classes)
+        self.dense = keras.layers.Dense(
+            classes,
+            kernel_initializer='glorot_normal'
+        )
 
     def call(self, inputs, **kwargs):
         out = self.net(inputs)
