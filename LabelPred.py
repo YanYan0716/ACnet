@@ -7,7 +7,7 @@ class LabelPred(keras.layers.Layer):
     def __init__(self, filters, classes):
         super(LabelPred, self).__init__()
         self.net = keras.Sequential([
-            keras.layers.BatchNormalization(momentum=0.9),
+            keras.layers.BatchNormalization(),
             keras.layers.Conv2D(filters, 1, 1, activation='relu', kernel_initializer='random_normal'),
             keras.layers.GlobalMaxPooling2D(),
         ])
