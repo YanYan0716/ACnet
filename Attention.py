@@ -16,11 +16,8 @@ class Attention(keras.layers.Layer):
         self.conv_2 = keras.layers.Conv2D(filters, 3, 1, padding='same', use_bias=False, kernel_initializer='random_normal',)
         self.BN_2 = keras.layers.BatchNormalization(momentum=0.9)
 
-        self.BN = keras.layers.BatchNormalization(momentum=0.9)
         self.GAP = keras.layers.GlobalAveragePooling2D()
-        self.conv1 = keras.layers.Conv2D(filters//16, 1, 1, kernel_initializer='random_normal')
-        self.relu = keras.layers.ReLU()
-        self.conv2 = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal')
+        self.conv2 = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal', activation='sigmoid')
 
         self.ASPP = ASPP(filters, size)
 
@@ -28,11 +25,10 @@ class Attention(keras.layers.Layer):
         # img_fts1 = self.ASPP(inputs)
         img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(inputs)))
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
-        img_fts2 = self.GAP(self.BN(img_fts1))
+        img_fts2 = self.GAP(img_fts1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
-        img_fts2 = self.conv2(self.relu(self.conv1(img_fts2)))
-        img_fts2 = keras.activations.sigmoid(img_fts2)
+        img_fts2 = self.conv2(self.conv1(img_fts2))
         out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
         out = keras.activations.relu(out)
         return out
