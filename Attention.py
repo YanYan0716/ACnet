@@ -26,7 +26,7 @@ class Attention(keras.layers.Layer):
 
     def call(self, inputs):
         # img_fts1 = self.ASPP(inputs)
-        img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(img_fts1)))
+        img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(inputs)))
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
         img_fts2 = self.GAP(self.BN(img_fts1))
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
