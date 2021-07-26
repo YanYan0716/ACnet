@@ -50,7 +50,7 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     # bias_initializer=initializer,
                 ),
-                keras.layers.LayerNormalization(epsilon=1e-3),
+                keras.layers.LayerNormalization(axis=[1,2,3],epsilon=1e-3),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
@@ -70,7 +70,7 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     # bias_initializer=initializer
                 ),
-                keras.layers.LayerNormalization(epsilon=1e-3),
+                keras.layers.LayerNormalization(axis=[1,2,3],epsilon=1e-3),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
