@@ -26,7 +26,7 @@ class myLoss(keras.losses.Loss):
         y_true = tf.one_hot(y_true, config.CLASSES_NUM)
         y_pred = tf.nn.log_softmax(y_pred, axis=-1)
         loss = tf.einsum('mn, mn -> mn', y_true, y_pred)
-        loss = -tf.reduce_mean(loss)
+        loss = -tf.reduce_mean(tf.reduce_sum(loss, axis=1))
         return loss
 
         

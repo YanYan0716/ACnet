@@ -49,3 +49,4 @@ for epoch in range(config.MAX_EPOCH):
             print(flag, result)
     print('epoch:{epoch}')
 # training.fit()
+tf.te
