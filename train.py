@@ -22,7 +22,7 @@ model = ACnet(
     ratio=2,
     afilter=512,
     size=(config.FTS_SIZE, config.FTS_SIZE),
-    pfilter=512,
+    pfilter=1024,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
 )
@@ -34,7 +34,7 @@ acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
     # optimizer=tfa.optimizers.SGDW(learning_rate=1., momentum=0.9, weight_decay=5e-6),
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.1),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
     loss=loss,
     metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
