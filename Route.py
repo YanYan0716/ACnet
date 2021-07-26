@@ -110,15 +110,16 @@ class GlobalContext(keras.layers.Layer):
 class Route(keras.layers.Layer):
     def __init__(self, inplanes, ratio, channel):
         super(Route, self).__init__()
+        self.conv = keras.layers.Conv2D(channel, 1, 1)
         self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
         self.l2Norm = tf.math.l2_normalize
         self.dense = keras.layers.Dense(1, activation='sigmoid')
 
     def call(self, inputs, **kwargs):
-        x = inputs
-        x_ = self.globalContext(x)
-        out = self.globalAvgPooling(x + x_)
+        out = self.conv(inputs)
+        out = self.globalContext(out)
+        out = self.globalAvgPooling(out)
         out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out)
         out = self.l2Norm(out, axis=-1)
         out = self.dense(out)
@@ -128,13 +129,13 @@ class Route(keras.layers.Layer):
 if __name__ == '__main__':
     # test GlobalContext
     img = tf.random.normal((5, 14, 14, 1024))
-    gcLayer = GlobalContext(inplanes=1, ratio=2, channel=1024)
-    y = gcLayer(img)
-    print(y.shape)
+    # gcLayer = GlobalContext(inplanes=1, ratio=2, channel=1024)
+    # y = gcLayer(img)
+    # print(y.shape)
 
     # test Route
-    # inputs = keras.Input(shape=(14, 14, 1024))
-    # route = Route(inplanes=1, ratio=2, channel=1024)
-    # model = keras.Model(inputs=inputs, outputs=route(inputs))
-    # y = model(img)
-    # print(y)
+    inputs = keras.Input(shape=(14, 14, 1024))
+    route = Route(inplanes=1, ratio=2, channel=1024)
+    model = keras.Model(inputs=inputs, outputs=route(inputs))
+    y = model(img)
+    print(y)
