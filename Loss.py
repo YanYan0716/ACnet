@@ -15,14 +15,14 @@ class myLoss(keras.losses.Loss):
         self.betha = betha
 
     def __call__(self, y_true, y_pred, sample_weight=None):
-        a = self.loss_func(y_true, y_pred[0]) * self.alpha
-        b = self.loss_func(y_true, y_pred[1]) * self.alpha
-        c = self.loss_func(y_true, y_pred[2]) * self.alpha
-        d = self.loss_func(y_true, y_pred[3]) * self.alpha
-        all_ = self.loss_func(y_true, y_pred[4]) * self.betha
-        return (a + b + c + d + all_)
+        a = self.NLLLoss(y_true, y_pred[0]) * self.alpha
+        b = self.NLLLoss(y_true, y_pred[1]) * self.alpha
+        c = self.NLLLoss(y_true, y_pred[2]) * self.alpha
+        d = self.NLLLoss(y_true, y_pred[3]) * self.alpha
+        all_ = self.NLLLoss(y_true, y_pred[4]) * self.betha
+        return a + b + c + d + all_
 
-    def loss_func(self, y_true, y_pred):
+    def NLLLoss(self, y_true, y_pred):
         y_true = tf.one_hot(y_true, config.CLASSES_NUM)
         y_pred = tf.nn.log_softmax(y_pred, axis=-1)
         loss = tf.einsum('mn, mn -> mn', y_true, y_pred)
