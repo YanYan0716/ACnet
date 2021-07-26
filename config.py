@@ -1,7 +1,7 @@
 DATA_PATH = '../input/cub-200-2011/train.csv'
 SIZE = 256
 IMG_SIZE = 224
-BATCH_SIZE = 16
+BATCH_SIZE = 32
 CLASSES_NUM = 200
 
 FTS_SIZE = 14
