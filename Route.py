@@ -48,7 +48,7 @@ class GlobalContext(keras.layers.Layer):
                 #     kernel_initializer='random_normal',
                 #     # bias_initializer=initializer,
                 # ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-3),
+                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
@@ -60,7 +60,6 @@ class GlobalContext(keras.layers.Layer):
         else:
             self.channel_add_conv = None
         if 'channel_mul' in fusion_types:
-            initializer = tf.keras.initializers.Constant(0.)
             self.channel_mul_conv = keras.Sequential([
                 keras.layers.Conv2D(
                     self.planes,
@@ -68,13 +67,12 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     # bias_initializer=initializer
                 ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-3),
+                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
-                    bias_initializer=initializer
                 )
             ])
         else:
@@ -132,7 +130,7 @@ class Route(keras.layers.Layer):
         out = self.conv(inputs)
         out = self.globalContext(out)
         out = self.globalAvgPooling(out)
-        out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out)
+        out = tf.sign(out) * tf.math.sqrt(tf.sign(out) * out + 1e-12)
         out = self.l2Norm(out, axis=-1)
         out = self.dense(out)
         return out
