@@ -15,9 +15,9 @@ class ASPP(keras.layers.Layer):
         self.upsample = keras.layers.UpSampling2D(size, interpolation='bilinear')
 
         self.atrous_block1 = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal')
-        self.atrous_block6 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=(6, 6), kernel_initializer='random_normal')
-        self.atrous_block12 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=(12, 12), kernel_initializer='random_normal')
-        self.atrous_block18 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=(18, 18), kernel_initializer='random_normal')
+        self.atrous_block6 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=6, kernel_initializer='random_normal')
+        self.atrous_block12 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=12, kernel_initializer='random_normal')
+        self.atrous_block18 = keras.layers.Conv2D(filters, 3, 1, padding='same', dilation_rate=18, kernel_initializer='random_normal')
 
         self.conv_1_output = keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal')
 
