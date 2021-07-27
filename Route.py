@@ -65,7 +65,6 @@ class GlobalContext(keras.layers.Layer):
                     self.planes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
-                    # bias_initializer=initializer
                 ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
@@ -73,6 +72,7 @@ class GlobalContext(keras.layers.Layer):
                     self.inplanes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
+                    activation='sigmoid'
                 )
             ])
         else:
@@ -97,10 +97,12 @@ class GlobalContext(keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         context = self.spatical_pool(inputs)
-        out = inputs
+
         if self.channel_mul_conv is not None:
-            channel_mul_term = keras.activations.sigmoid(self.channel_mul_conv(context))
+            channel_mul_term = self.channel_mul_conv(context)
             out = inputs * channel_mul_term
+        else:
+            out = inputs
         if self.channel_add_conv is not None:
             channel_add_term = self.channel_add_conv(context)
             out = out + channel_add_term

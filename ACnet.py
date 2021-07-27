@@ -26,7 +26,13 @@ def ACnet(
     tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
     my_input = backbone.layers[0].input
     output = backbone.get_layer('conv4_block6_out').output
-    output = keras.layers.Conv2D(afilter, 1, 1, activation='relu')(output)
+    output = keras.layers.Conv2D(
+        afilter,
+        1,
+        1,
+        activation='relu',
+        kernel_initializer='random_normal'
+    )(output)
     output = tree(output)
     all_model = keras.Model(inputs=my_input, outputs=output)
     return all_model
