@@ -45,8 +45,8 @@ class GlobalContext(keras.layers.Layer):
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
-                keras.layers.ReLU(),
+                # keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
+                keras.layers.LeakyReLU(alpha=0.2),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
@@ -66,8 +66,8 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='he_normal',
                     kernel_regularizer=regularizers.l2(5e-4),
                 ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
-                keras.layers.ReLU(),
+                # keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
+                keras.layers.LeakyReLU(alpha=0.2),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
@@ -130,7 +130,6 @@ class Route(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             1,
             activation='sigmoid',
-            use_bias=False,
             kernel_initializer='he_normal',
             kernel_regularizer=regularizers.l2(5e-4),
         )

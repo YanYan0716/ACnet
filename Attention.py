@@ -43,8 +43,8 @@ class Attention(keras.layers.Layer):
             use_bias=False,
             kernel_initializer='he_normal',
             kernel_regularizer=regularizers.l2(5e-4),
-            activation='relu'
         )
+        self.relu = keras.layers.LeakyReLU(alpha=0.2)
         self.conv2 = keras.layers.Conv2D(
             filters,
             1,
@@ -59,13 +59,13 @@ class Attention(keras.layers.Layer):
 
     def call(self, inputs):
         # img_fts1 = self.ASPP(inputs)
-        img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(inputs)))
+        img_fts1 = self.relu(self.BN_1(self.conv_1(inputs)))
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
 
         img_fts2 = self.GAP(img_fts1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
-        img_fts2 = self.conv2(self.conv1(img_fts2))
+        img_fts2 = self.conv2(self.relu(self.conv1(img_fts2)))
         out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
         out = keras.activations.relu(out)
         return out

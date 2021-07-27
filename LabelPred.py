@@ -22,7 +22,6 @@ class LabelPred(keras.layers.Layer):
         self.flatten = keras.layers.Flatten()
         self.dense = keras.layers.Dense(
             classes,
-            use_bias=False,
             kernel_initializer='he_normal',
             kernel_regularizer=regularizers.l2(5e-4),
         )
