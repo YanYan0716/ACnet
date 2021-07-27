@@ -30,12 +30,12 @@ model = ACnet(
 # loss
 loss = myLoss(alpha=1., betha=1.)
 # optimizer
+# 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
     values=[0.03, 0.01, 0.001, 0.0005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
-acc_metric.reset_states()
 training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=tfa.optimizers.SGDW(
