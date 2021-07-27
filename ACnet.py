@@ -18,7 +18,7 @@ def ACnet(
 ):
     backbone = keras.applications.VGG16(
         include_top=False,
-        weights=None,
+        weights='imagenet',
         input_shape=input_shape,
     )
     if firstStage:
