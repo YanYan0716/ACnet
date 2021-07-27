@@ -54,7 +54,9 @@ for epoch in range(config.MAX_EPOCH):
     for (img, label) in ds_train:
         flag += 1
         result = training.train_step(data=(img, label))
-        if flag % 20 == 0:
-            print(flag, result)
-    print('epoch:{}'.format(epoch+1))
-# training.fit()
+        if flag % config.LOG_BATCH == 0:
+            print(f'stage First: %s' % str(config.FIRST_SEAGE)+'[max_epoch: %3d]' % config.MAX_EPOCH + ',[epoch:%3d/' % (epoch+1) \
+                  + 'idx: %3d]' % flag + '[Loss:%.4f' % (result['loss'].numpy()) + '/ ACC: %.4f]' % (result['accuracy'].numpy()))
+
+    # if epoch % config.EVAL_EPOCH == 0:
+    #     result = training.test_step(data=)

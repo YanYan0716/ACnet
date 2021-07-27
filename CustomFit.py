@@ -36,7 +36,7 @@ class CustomFit(keras.Model):
 
     def test_step(self, data):
         img, label = data
-        pred = self.model(img, training=True)
+        pred = self.model(img, training=False)
         loss = self.loss(label, pred)
         self.acc_metric.update_state(label, pred[-1])
         return {'loss': loss, 'accuracy': self.acc_metric.result()}
