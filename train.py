@@ -44,7 +44,7 @@ training.compile(
     weight_decay=5e-6
     ),
     loss=loss,
-    metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
+    # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
 
 print('prepared ...')
@@ -53,6 +53,7 @@ BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
     training.reset_metrics()
+    training.acc_metric.reset_metrics()
     for (img, label) in ds_train:
         flag += 1
         result = training.train_step(data=(img, label))
@@ -64,6 +65,7 @@ for epoch in range(config.MAX_EPOCH):
 
     if epoch % config.EVAL_EPOCH == 0:
         training.reset_metrics()
+        training.acc_metric.reset_metrics()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
         print(

@@ -25,7 +25,7 @@ def readTestImg(img_path, label):
 
 def augment(img, label):
     image = tf.image.random_crop(img, [config.IMG_SIZE, config.IMG_SIZE, 3])
-    image = tf.image.random_brightness(image, max_delta=0.9)
+    # image = tf.image.random_brightness(image, max_delta=0.9)
     # image = tf.image.random_contrast(image, lower=0.1, upper=0.9)
     image = tf.image.random_flip_left_right(image)
     image = (image / 255.0)
