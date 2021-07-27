@@ -33,7 +33,7 @@ loss = myLoss(alpha=1., betha=1.)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=tfa.optimizers.SGDW(learning_rate=0.03, momentum=0.9, weight_decay=5e-6),
+    optimizer=tfa.optimizers.SGDW(learning_rate=0.05, momentum=0.9, weight_decay=5e-6),
     # optimizer=tf.keras.optimizers.Adam(learning_rate=0.1),
     loss=loss,
     metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
