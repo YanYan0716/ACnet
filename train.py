@@ -30,11 +30,12 @@ model = ACnet(
 # loss
 loss = myLoss(alpha=1., betha=1.)
 # optimizer
-lr_schedule = keras.optimizers.schedules.ExponentialDecay(
-    config.INIT_LR,
-    decay_steps=config.MAX_EPOCH,
-    decay_rate=0.96,
-    staircase=True)
+lr_schedule = keras.optimizers.schedules.PolynomialDecay(
+    initial_learning_rate=config.INIT_LR,
+    decay_steps=70,
+    power=0.5,
+    end_learning_rate=0.00001
+)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 acc_metric.reset_states()
 training = CustomFit(model, acc_metric)
