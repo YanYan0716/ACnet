@@ -33,7 +33,7 @@ loss = myLoss(alpha=1., betha=1.)
 # 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
-    values=[0.03, 0.01, 0.001, 0.0005]
+    values=[0.01, 0.005, 0.001, 0.0005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
@@ -72,3 +72,4 @@ for epoch in range(config.MAX_EPOCH):
         )
         if result['accuracy'].numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
+            BEST_ACC = result['accuracy'].numpy()
