@@ -30,20 +30,18 @@ model = ACnet(
 # loss
 loss = myLoss(alpha=1., betha=1.)
 # optimizer
-lr_schedule = keras.optimizers.schedules.PolynomialDecay(
-    initial_learning_rate=config.INIT_LR,
-    decay_steps=70,
-    power=0.5,
-    end_learning_rate=0.00001
+lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
+    boundaries=[20, 50, 70],
+    values=[0.03, 0.01, 0.001, 0.0005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 acc_metric.reset_states()
 training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=tfa.optimizers.SGDW(
-    learning_rate=lr_schedule,
-    momentum=0.9,
-    weight_decay=5e-6
+        learning_rate=lr_schedule,
+        momentum=0.9,
+        weight_decay=5e-6
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
