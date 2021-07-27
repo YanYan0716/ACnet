@@ -8,37 +8,50 @@ import matplotlib.pyplot as plt
 import config
 
 
-def readImg(img_path, label):
+def readTrainImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
     img = tf.image.resize(img, (config.SIZE, config.SIZE))
     return img, label
 
 
+def readTestImg(img_path, label):
+    img = tf.io.read_file(img_path)
+    img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.image.resize(img, (config.IMG_SIZE, config.IMG_SIZE))
+    return img, label
+
+
 def augment(img, label):
     image = tf.image.random_crop(img, [config.IMG_SIZE, config.IMG_SIZE, 3])
     image = tf.image.random_brightness(image, max_delta=0.9)
-    image = tf.image.random_contrast(image, lower=0.1, upper=0.9)
+    # image = tf.image.random_contrast(image, lower=0.1, upper=0.9)
     image = tf.image.random_flip_left_right(image)
     image = (image / 255.0)
     return image, label
 
 
-def dataset(dataPath):
+def dataset(dataPath, train=True):
     df = pd.read_csv(dataPath)
     file_paths = df['name'].values
     labels = df['label'].values
 
-    ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
-    ds_train = ds_train\
-        .map(readImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
-        .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
-        .cache()\
-        .shuffle(6000)\
-        .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
-        .batch(config.BATCH_SIZE)\
-
-
+    if train:
+        ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
+        ds_train = ds_train\
+            .map(readTrainImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+            .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+            .cache()\
+            .shuffle(6000)\
+            .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
+            .batch(config.BATCH_SIZE)
+    else:
+        ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
+        ds_train = ds_train\
+            .map(readTestImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+            .cache()\
+            .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
+            .batch(config.BATCH_SIZE)
     return ds_train
 
 
