@@ -36,6 +36,7 @@ lr_schedule = keras.optimizers.schedules.ExponentialDecay(
     decay_rate=0.96,
     staircase=True)
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
+acc_metric.reset_states()
 training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=tfa.optimizers.SGDW(
@@ -52,8 +53,7 @@ print('==================================')
 BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
-    training.reset_metrics()
-    training.acc_metric.reset_metrics()
+    training.acc_metric.reset_states()
     for (img, label) in ds_train:
         flag += 1
         result = training.train_step(data=(img, label))
@@ -64,8 +64,7 @@ for epoch in range(config.MAX_EPOCH):
                       result['accuracy'].numpy()))
 
     if epoch % config.EVAL_EPOCH == 0:
-        training.reset_metrics()
-        training.acc_metric.reset_metrics()
+        training.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
         print(
