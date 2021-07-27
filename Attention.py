@@ -17,6 +17,7 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             kernel_initializer='random_normal',
+            use_bias=False,
         )
         self.BN_1 = keras.layers.BatchNormalization()
         self.conv_2 = keras.layers.Conv2D(
@@ -25,6 +26,7 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             kernel_initializer='random_normal',
+            use_bias=False
         )
         self.BN_2 = keras.layers.BatchNormalization()
 
@@ -47,8 +49,8 @@ class Attention(keras.layers.Layer):
         self.ASPP = ASPP(filters, size)
 
     def call(self, inputs):
-        img_fts1 = self.ASPP(inputs)
-        img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(img_fts1)))
+        # img_fts1 = self.ASPP(inputs)
+        img_fts1 = keras.activations.relu(self.BN_1(self.conv_1(inputs)))
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
 
         img_fts2 = self.GAP(img_fts1)

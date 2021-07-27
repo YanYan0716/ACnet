@@ -8,8 +8,8 @@ class LabelPred(keras.layers.Layer):
         super(LabelPred, self).__init__()
         self.net = keras.Sequential([
             keras.layers.BatchNormalization(),
-            keras.layers.Conv2D(filters, 1, 1, activation='relu', kernel_initializer='random_normal'),
-            keras.layers.GlobalMaxPooling2D(),
+            keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal'),
+            keras.layers.GlobalAveragePooling2D(),
         ])
         self.l2 = tf.math.l2_normalize
         self.flatten = keras.layers.Flatten()

@@ -97,7 +97,6 @@ class GlobalContext(keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         context = self.spatical_pool(inputs)
-
         if self.channel_mul_conv is not None:
             channel_mul_term = self.channel_mul_conv(context)
             out = inputs * channel_mul_term
