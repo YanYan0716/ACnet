@@ -22,7 +22,6 @@ class CustomFit(keras.Model):
 
     def train_step(self, data):
         img, label = data
-
         # 前向传播
         with tf.GradientTape() as tape:
             pred = self.model(img, training=True)
