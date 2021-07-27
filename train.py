@@ -52,7 +52,7 @@ print('==================================')
 BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
-    # training.acc_metric.reset_states()
+    training.acc_metric.reset_states()
     for (img, label) in ds_train:
         flag += 1
         result = training.train_step(data=(img, label))
@@ -63,7 +63,7 @@ for epoch in range(config.MAX_EPOCH):
                       result['accuracy'].numpy()))
 
     if epoch % config.EVAL_EPOCH == 0:
-        # training.acc_metric.reset_states()
+        training.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
         print(
