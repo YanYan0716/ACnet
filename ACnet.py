@@ -1,4 +1,7 @@
 import os
+
+from tensorflow.keras import regularizers
+
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -30,8 +33,9 @@ def ACnet(
         afilter,
         1,
         1,
-        activation='relu',
-        kernel_initializer='random_normal'
+        use_bias=False,
+        kernel_initializer='he_normal',
+        kernel_regularizer=regularizers.l2(5e-4),
     )(output)
     output = tree(output)
     all_model = keras.Model(inputs=my_input, outputs=output)

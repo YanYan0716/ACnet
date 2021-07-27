@@ -1,5 +1,7 @@
 import os
 
+from tensorflow.keras import regularizers
+
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -34,27 +36,23 @@ class GlobalContext(keras.layers.Layer):
             self.conv_mask = keras.layers.Conv2D(
                 filters=1,
                 kernel_size=1,
-                kernel_initializer='random_normal',
-                # activation='relu'
+                use_bias=False,
+                kernel_initializer='he_normal',
+                kernel_regularizer=regularizers.l2(5e-4),
             )
             self.softmax = keras.layers.Softmax(axis=-1)
         else:
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
-                # keras.layers.Conv2D(
-                #     self.planes,
-                #     kernel_size=1,
-                #     kernel_initializer='random_normal',
-                #     # bias_initializer=initializer,
-                # ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
-                    # bias_initializer=initializer
+                    use_bias=False,
+                    kernel_initializer='he_normal',
+                    kernel_regularizer=regularizers.l2(5e-4),
                 )
             ])
         else:
@@ -64,14 +62,18 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.planes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
+                    use_bias=False,
+                    kernel_initializer='he_normal',
+                    kernel_regularizer=regularizers.l2(5e-4),
                 ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
+                    use_bias=False,
+                    kernel_initializer='he_normal',
+                    kernel_regularizer=regularizers.l2(5e-4),
                     activation='sigmoid'
                 )
             ])
@@ -118,7 +120,9 @@ class Route(keras.layers.Layer):
             channel,
             1,
             1,
-            kernel_initializer='random_normal'
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
         )
         self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
@@ -126,7 +130,9 @@ class Route(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             1,
             activation='sigmoid',
-            kernel_initializer='glorot_normal'
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
         )
 
     def call(self, inputs, **kwargs):

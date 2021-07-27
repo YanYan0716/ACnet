@@ -7,15 +7,24 @@ class LabelPred(keras.layers.Layer):
     def __init__(self, filters, classes):
         super(LabelPred, self).__init__()
         self.net = keras.Sequential([
-            keras.layers.BatchNormalization(momentum=0.01),
-            keras.layers.Conv2D(filters, 1, 1, kernel_initializer='random_normal'),
+            keras.layers.BatchNormalization(momentum=0.001),
+            keras.layers.Conv2D(
+                filters,
+                1,
+                1,
+                use_bias=False,
+                kernel_initializer='he_normal',
+                kernel_regularizer=regularizers.l2(5e-4),
+            ),
             keras.layers.GlobalAveragePooling2D(),
         ])
         self.l2 = tf.math.l2_normalize
         self.flatten = keras.layers.Flatten()
         self.dense = keras.layers.Dense(
             classes,
-            kernel_initializer='glorot_normal'
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
         )
 
     def call(self, inputs, **kwargs):

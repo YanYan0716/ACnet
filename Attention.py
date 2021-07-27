@@ -1,4 +1,7 @@
 import os
+
+from tensorflow.keras import regularizers
+
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -16,33 +19,39 @@ class Attention(keras.layers.Layer):
             3,
             1,
             padding='same',
-            kernel_initializer='random_normal',
             use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
         )
-        self.BN_1 = keras.layers.BatchNormalization(momentum=0.01)
+        self.BN_1 = keras.layers.BatchNormalization(momentum=0.001)
         self.conv_2 = keras.layers.Conv2D(
             filters,
             3,
             1,
             padding='same',
-            kernel_initializer='random_normal',
-            use_bias=False
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
         )
-        self.BN_2 = keras.layers.BatchNormalization(momentum=0.01)
+        self.BN_2 = keras.layers.BatchNormalization(momentum=0.001)
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
             filters //16,
             1,
             1,
-            kernel_initializer='random_normal',
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
             activation='relu'
         )
         self.conv2 = keras.layers.Conv2D(
             filters,
             1,
             1,
-            kernel_initializer='random_normal',
+            use_bias=False,
+            kernel_initializer='he_normal',
+            kernel_regularizer=regularizers.l2(5e-4),
             activation='sigmoid'
         )
 
