@@ -12,19 +12,20 @@ def readImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
     img = tf.image.resize(img, (config.SIZE, config.SIZE))
-    # label = tf.one_hot(label, config.CLASSES_NUM)
     return img, label
 
 
 def augment(img, label):
-    img = tf.image.random_crop(img, [config.IMG_SIZE, config.IMG_SIZE, 3])
-    img = tf.image.flip_left_right(image=img)
-    img = (img / 255.0)
-    return img, label
+    image = tf.image.random_crop(img, [config.IMG_SIZE, config.IMG_SIZE, 3])
+    image = tf.image.random_brightness(image, max_delta=0.9)
+    image = tf.image.random_contrast(image, lower=0.1, upper=0.9)
+    image = tf.image.random_flip_left_right(image)
+    image = (image / 255.0)
+    return image, label
 
 
 def dataset(dataPath):
-    df = pd.read_csv(dataPath)
+    df = pd.read_csv('../CUB_200_2011/aaa.csv')
     file_paths = df['name'].values
     labels = df['label'].values
 
