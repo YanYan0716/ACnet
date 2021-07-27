@@ -19,6 +19,7 @@ def readTestImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
     img = tf.image.resize(img, (config.IMG_SIZE, config.IMG_SIZE))
+    img = (img / 255.0)
     return img, label
 
 

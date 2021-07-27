@@ -65,7 +65,7 @@ for epoch in range(config.MAX_EPOCH):
     if epoch % config.EVAL_EPOCH == 0:
         training.reset_metrics()
         for (img, label) in ds_test:
-            result = training.train_step(data=(img, label))
+            result = training.test_step(data=(img, label))
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + '[Loss:%.4f' % (result['loss'].numpy()) + ',ACC: %.4f]' % (
                 result['accuracy'].numpy())
