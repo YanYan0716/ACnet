@@ -19,7 +19,7 @@ class Attention(keras.layers.Layer):
             kernel_initializer='random_normal',
             use_bias=False,
         )
-        self.BN_1 = keras.layers.BatchNormalization()
+        self.BN_1 = keras.layers.BatchNormalization(momentum=0.01)
         self.conv_2 = keras.layers.Conv2D(
             filters,
             3,
@@ -28,7 +28,7 @@ class Attention(keras.layers.Layer):
             kernel_initializer='random_normal',
             use_bias=False
         )
-        self.BN_2 = keras.layers.BatchNormalization()
+        self.BN_2 = keras.layers.BatchNormalization(momentum=0.01)
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
