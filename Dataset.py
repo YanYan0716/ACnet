@@ -25,7 +25,7 @@ def augment(img, label):
 
 
 def dataset(dataPath):
-    df = pd.read_csv('../CUB_200_2011/aaa.csv')
+    df = pd.read_csv(dataPath)
     file_paths = df['name'].values
     labels = df['label'].values
 
