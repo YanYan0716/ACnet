@@ -18,7 +18,7 @@ def ACnet(
 ):
     backbone = keras.applications.VGG16(
         include_top=False,
-        weights='imagenet',
+        weights=None,
         input_shape=input_shape,
     )
     if firstStage:
@@ -41,5 +41,6 @@ def ACnet(
 if __name__ == '__main__':
     img = tf.random.normal((2, 448, 448, 3))
     model = ACnet()
-    labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
-    print(labelPred1.shape)
+    # labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
+    # print(labelPred1.shape)
+    model.save_weights('./123/111', save_format='h5')

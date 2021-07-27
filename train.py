@@ -71,4 +71,4 @@ for epoch in range(config.MAX_EPOCH):
                 result['accuracy'].numpy())
         )
         if result['accuracy'].numpy() > BEST_ACC:
-            model.save(config.SAVE_PATH)
+            model.save_weights(config.SAVE_PATH, save_format='h5')
