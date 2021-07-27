@@ -15,7 +15,7 @@ import config
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('channel_add', 'channel_mul'),
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add', 'channel_mul'),
                  size=config.FTS_SIZE, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
@@ -37,7 +37,7 @@ class GlobalContext(keras.layers.Layer):
                 kernel_initializer='random_normal',
                 # activation='relu'
             )
-            self.softmax = keras.layers.Softmax(axis=1)
+            self.softmax = keras.layers.Softmax(axis=-1)
         else:
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
@@ -83,13 +83,15 @@ class GlobalContext(keras.layers.Layer):
             input_x = x
             input_x = tf.reshape(input_x, (-1, self.size * self.size, self.channel))
             input_x = tf.transpose(input_x, [0, 2, 1])
+            input_x = tf.expand_dims(input_x, axis=1)
 
             context_mask = self.conv_mask(x)
-            context_mask = tf.reshape(context_mask, (-1, self.size * self.size))
+            context_mask = tf.reshape(context_mask, (-1, self.size * self.size, 1))
+            context_mask = tf.transpose(context_mask, [0, 2, 1])
             context_mask = self.softmax(context_mask)
             context_mask = tf.expand_dims(context_mask, axis=-1)
-            context = tf.matmul(input_x, context_mask)
-            context = tf.reshape(context, (-1, 1, 1, self.channel))
+            context = tf.einsum('njcw, njwq -> njcq', input_x, context_mask)
+            context = tf.transpose(context, [0, 1, 3, 2])
         else:
             context = self.avg_pool(x)
             context = tf.reshape(context, (-1, 1, 1, self.channel))
@@ -99,7 +101,7 @@ class GlobalContext(keras.layers.Layer):
         context = self.spatical_pool(inputs)
         if self.channel_mul_conv is not None:
             channel_mul_term = self.channel_mul_conv(context)
-            out = inputs * channel_mul_term
+            out = inputs*channel_mul_term
         else:
             out = inputs
         if self.channel_add_conv is not None:
@@ -139,14 +141,14 @@ class Route(keras.layers.Layer):
 
 if __name__ == '__main__':
     # test GlobalContext
-    img = tf.random.normal((5, 14, 14, 1024))
-    # gcLayer = GlobalContext(inplanes=1, ratio=2, channel=1024)
-    # y = gcLayer(img)
-    # print(y.shape)
+    img = tf.random.normal((5, 28, 28, 512))
+    gcLayer = GlobalContext(inplanes=512, ratio=1, channel=512)
+    y = gcLayer(img)
+    print(y.shape)
 
     # test Route
-    inputs = keras.Input(shape=(14, 14, 1024))
-    route = Route(inplanes=512, ratio=1, channel=512)
-    model = keras.Model(inputs=inputs, outputs=route(inputs))
-    y = model(img)
-    print(y)
+    # inputs = keras.Input(shape=(14, 14, 1024))
+    # route = Route(inplanes=512, ratio=1, channel=512)
+    # model = keras.Model(inputs=inputs, outputs=route(inputs))
+    # y = model(img)
+    # print(y)

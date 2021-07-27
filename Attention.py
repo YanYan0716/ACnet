@@ -32,7 +32,7 @@ class Attention(keras.layers.Layer):
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
-            filters,
+            filters //16,
             1,
             1,
             kernel_initializer='random_normal',
