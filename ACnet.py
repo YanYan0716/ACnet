@@ -27,6 +27,7 @@ def ACnet(
     if firstStage:
         backbone.trainable = False
     tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
+
     my_input = backbone.layers[0].input
     output = backbone.get_layer('block4_conv3').output
     output = keras.layers.Conv2D(

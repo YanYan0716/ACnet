@@ -1,6 +1,7 @@
 """关于pytorch和tf的异同"""
 import numpy as np
 import torch
+import torch.nn.functional as F
 import tensorflow as tf
 
 # batchnorm
@@ -58,3 +59,19 @@ print('----------')
 print(y1[0][0])
 print('------------')
 print(y2[0, :, :, 0])
+
+#l2 norm
+a=np.random.normal(size=(1,3,4,4))
+torch_a = torch.from_numpy(a).to(torch.float32)
+tf_a = tf.convert_to_tensor(a, dtype=tf.float32)
+tf_a = tf.transpose(tf_a, [0, 2, 3, 1])
+
+torchL = lambda x: F.normalize(x, dim=1)
+tfL = tf.math.l2_normalize
+
+y1=torchL(torch_a)
+y2=tfL(tf_a, axis=-1)
+print('----------')
+print(y1[0][0])
+print('------------')
+print(y2[0,:,:,0])
