@@ -47,4 +47,5 @@ if __name__ == '__main__':
     model = ACnet()
     # labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
     # print(labelPred1.shape)
-    model.save_weights('./123/111', save_format='h5')
+    # model.save_weights('./123/111', save_format='h5')
+    model.summary()
