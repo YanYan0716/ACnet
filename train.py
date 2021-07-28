@@ -18,9 +18,9 @@ ds_test = dataset(config.DATA_TEST, train=False)
 # model
 model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
-    inplanes=512,
+    inplanes=1024,
     ratio=1,
-    afilter=512,
+    afilter=1024,
     size=(config.FTS_SIZE, config.FTS_SIZE),
     pfilter=1024,
     classes=config.CLASSES_NUM,
@@ -41,7 +41,7 @@ training.compile(
     optimizer=tfa.optimizers.SGDW(
         learning_rate=lr_schedule,
         momentum=0.9,
-        weight_decay=5e-5
+        weight_decay=5e-6
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
