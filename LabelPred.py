@@ -13,6 +13,8 @@ class LabelPred(keras.layers.Layer):
                 1,
                 1,
                 kernel_initializer='random_normal',
+                kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+                bias_regularizer=tf.keras.regularizers.l2(5e-6)
             ),
             keras.layers.GlobalAveragePooling2D(),
         ])
@@ -20,6 +22,8 @@ class LabelPred(keras.layers.Layer):
         self.flatten = keras.layers.Flatten()
         self.dense = keras.layers.Dense(
             classes,
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
 
     def call(self, inputs, **kwargs):

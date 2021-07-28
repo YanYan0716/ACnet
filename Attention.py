@@ -21,6 +21,8 @@ class Attention(keras.layers.Layer):
             padding='same',
             use_bias=False,
             kernel_initializer='random_normal',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.BN_1 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
         self.conv_2 = keras.layers.Conv2D(
@@ -30,16 +32,20 @@ class Attention(keras.layers.Layer):
             padding='same',
             use_bias=False,
             kernel_initializer='random_normal',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.BN_2 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
-            filters //16,
+            filters // 16,
             1,
             1,
             kernel_initializer='random_normal',
-            activation='relu'
+            activation='relu',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.relu = keras.layers.ReLU()
         self.conv2 = keras.layers.Conv2D(
@@ -47,7 +53,9 @@ class Attention(keras.layers.Layer):
             1,
             1,
             kernel_initializer='random_normal',
-            activation='sigmoid'
+            activation='sigmoid',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
 
         self.ASPP = ASPP(filters, size)

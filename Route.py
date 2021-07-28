@@ -49,6 +49,8 @@ class GlobalContext(keras.layers.Layer):
                     self.inplanes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
+                    kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 )
             ])
         else:
@@ -59,6 +61,8 @@ class GlobalContext(keras.layers.Layer):
                     self.planes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
+                    kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 ),
                 keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
                 keras.layers.ReLU(),
@@ -66,7 +70,9 @@ class GlobalContext(keras.layers.Layer):
                     self.inplanes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
-                    activation='sigmoid'
+                    activation='sigmoid',
+                    kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 )
             ])
         else:
@@ -113,6 +119,8 @@ class Route(keras.layers.Layer):
             1,
             1,
             kernel_initializer='random_normal',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
@@ -120,6 +128,8 @@ class Route(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             1,
             activation='sigmoid',
+            kernel_regularizer=tf.keras.regularizers.l2(5e-6),
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
 
     def call(self, inputs, **kwargs):
