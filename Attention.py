@@ -22,9 +22,14 @@ class Attention(keras.layers.Layer):
             use_bias=False,
             kernel_initializer='random_normal',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
-        self.BN_1 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self.BN_1 = keras.layers.BatchNormalization(
+            epsilon=1e-5,
+            momentum=0.9,
+            beta_regularizer=tf.keras.regularizers.l2,
+            gamma_regularizer=tf.keras.regularizers.l2,
+        )
         self.conv_2 = keras.layers.Conv2D(
             filters,
             3,
@@ -33,9 +38,14 @@ class Attention(keras.layers.Layer):
             use_bias=False,
             kernel_initializer='random_normal',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
-        self.BN_2 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self.BN_2 = keras.layers.BatchNormalization(
+            epsilon=1e-5,
+            momentum=0.9,
+            beta_regularizer=tf.keras.regularizers.l2,
+            gamma_regularizer=tf.keras.regularizers.l2,
+        )
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
@@ -45,7 +55,7 @@ class Attention(keras.layers.Layer):
             kernel_initializer='random_normal',
             activation='relu',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.relu = keras.layers.ReLU()
         self.conv2 = keras.layers.Conv2D(
@@ -55,7 +65,7 @@ class Attention(keras.layers.Layer):
             kernel_initializer='random_normal',
             activation='sigmoid',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
 
         self.ASPP = ASPP(filters, size)

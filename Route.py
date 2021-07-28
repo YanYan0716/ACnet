@@ -43,14 +43,19 @@ class GlobalContext(keras.layers.Layer):
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
+                keras.layers.LayerNormalization(
+                    axis=[1, 2, 3],
+                    epsilon=1e-5,
+                    beta_regularizer=tf.keras.regularizers.l2,
+                    gamma_regularizer=tf.keras.regularizers.l2,
+                ),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
                     kernel_initializer='random_normal',
                     kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-                    # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 )
             ])
         else:
@@ -62,9 +67,14 @@ class GlobalContext(keras.layers.Layer):
                     kernel_size=1,
                     kernel_initializer='random_normal',
                     kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-                    # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 ),
-                keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
+                keras.layers.LayerNormalization(
+                    axis=[1, 2, 3],
+                    epsilon=1e-5,
+                    beta_regularizer=tf.keras.regularizers.l2,
+                    gamma_regularizer=tf.keras.regularizers.l2,
+                ),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
@@ -72,7 +82,7 @@ class GlobalContext(keras.layers.Layer):
                     kernel_initializer='random_normal',
                     activation='sigmoid',
                     kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-                    # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+                    bias_regularizer=tf.keras.regularizers.l2(5e-6)
                 )
             ])
         else:
@@ -120,7 +130,7 @@ class Route(keras.layers.Layer):
             1,
             kernel_initializer='random_normal',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
         self.globalContext = GlobalContext(inplanes=inplanes, ratio=ratio, channel=channel)
         self.globalAvgPooling = keras.layers.GlobalAveragePooling2D()
@@ -129,7 +139,7 @@ class Route(keras.layers.Layer):
             1,
             activation='sigmoid',
             kernel_regularizer=tf.keras.regularizers.l2(5e-6),
-            # bias_regularizer=tf.keras.regularizers.l2(5e-6)
+            bias_regularizer=tf.keras.regularizers.l2(5e-6)
         )
 
     def call(self, inputs, **kwargs):
