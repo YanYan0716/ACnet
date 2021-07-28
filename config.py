@@ -16,4 +16,4 @@ LOG_BATCH = 100
 EVAL_EPOCH = 5
 LOAD_PATH = './model.h5'
 
-L2 = tf.keras.regularizers.l2(5e-6)
+L2 = tf.keras.regularizers.l2(5e-4)
