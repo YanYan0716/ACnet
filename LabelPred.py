@@ -16,7 +16,7 @@ class LabelPred(keras.layers.Layer):
                 1,
                 kernel_initializer='random_normal',
                 kernel_regularizer=config.L2,
-                bias_regularizer=config.L2
+                # bias_regularizer=config.L2
             ),
             keras.layers.GlobalAveragePooling2D(),
         ])
@@ -25,7 +25,7 @@ class LabelPred(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             classes,
             kernel_regularizer=config.L2,
-            bias_regularizer=config.L2
+            # bias_regularizer=config.L2
         )
 
     def call(self, inputs, **kwargs):
