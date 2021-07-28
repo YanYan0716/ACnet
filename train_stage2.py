@@ -24,8 +24,10 @@ model = ACnet(
     size=(config.FTS_SIZE, config.FTS_SIZE),
     pfilter=1024,
     classes=config.CLASSES_NUM,
-    firstStage=config.FIRST_SEAGE
+    firstStage=False
 )
+
+model.load_weights(config.LOAD_PATH)
 
 # loss
 loss = myLoss(alpha=1, betha=1.)
@@ -33,7 +35,7 @@ loss = myLoss(alpha=1, betha=1.)
 # 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
-    values=[0.01, 0.005, 0.001, 0.0005]# [0.5, 0.1, 0.01, 0.005]
+    values=[0.005, 0.005, 0.001, 0.0005]# [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
@@ -47,7 +49,7 @@ training.compile(
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
 
-print('prepared first stage...')
+print('prepared second stage...')
 print('==================================')
 BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):

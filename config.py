@@ -13,4 +13,4 @@ LR_STEP = 100
 INIT_LR = 0.02
 LOG_BATCH = 100
 EVAL_EPOCH = 10
-SAVE_PATH = './model'
+LOAD_PATH = './model.h5'
