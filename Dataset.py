@@ -40,10 +40,10 @@ def dataset(dataPath, train=True):
     if train:
         ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         ds_train = ds_train\
-            .map(readTrainImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
-            .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .cache()\
             .shuffle(6000)\
+            .map(readTrainImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+            .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
             .batch(config.BATCH_SIZE)
     else:
