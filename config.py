@@ -2,7 +2,7 @@ DATA_PATH = '../input/cub-200-2011/train.csv'
 DATA_TEST = '../input/cub-200-2011/test.csv'
 SIZE = 512
 IMG_SIZE = 448
-BATCH_SIZE = 1
+BATCH_SIZE = 4
 CLASSES_NUM = 200
 
 FTS_SIZE = 28
@@ -11,6 +11,6 @@ FIRST_SEAGE = True
 
 LR_STEP = 100
 INIT_LR = 0.02
-LOG_BATCH = 20
+LOG_BATCH = 4
 EVAL_EPOCH = 10
 SAVE_PATH = './model'
