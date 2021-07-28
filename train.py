@@ -22,7 +22,7 @@ model = ACnet(
     ratio=1,
     afilter=512,
     size=(config.FTS_SIZE, config.FTS_SIZE),
-    pfilter=512,
+    pfilter=1024,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
 )
@@ -41,7 +41,7 @@ training.compile(
     optimizer=tfa.optimizers.SGDW(
         learning_rate=lr_schedule,
         momentum=0.9,
-        weight_decay=1e-5
+        weight_decay=5e-5
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
