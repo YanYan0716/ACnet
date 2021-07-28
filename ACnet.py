@@ -33,9 +33,8 @@ def ACnet(
         afilter,
         1,
         1,
-        use_bias=False,
-        kernel_initializer='he_normal',
-        kernel_regularizer=regularizers.l2(5e-4),
+        kernel_initializer='random_normal',
+        activation='relu'
     )(output)
     output = tree(output)
     all_model = keras.Model(inputs=my_input, outputs=output)

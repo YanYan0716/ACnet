@@ -20,38 +20,33 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             use_bias=False,
-            kernel_initializer='he_normal',
-            kernel_regularizer=regularizers.l2(5e-4),
+            kernel_initializer='random_normal',
         )
-        self.BN_1 = keras.layers.BatchNormalization(momentum=0.001)
+        self.BN_1 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
         self.conv_2 = keras.layers.Conv2D(
             filters,
             3,
             1,
             padding='same',
             use_bias=False,
-            kernel_initializer='he_normal',
-            kernel_regularizer=regularizers.l2(5e-4),
+            kernel_initializer='random_normal',
         )
-        self.BN_2 = keras.layers.BatchNormalization(momentum=0.001)
+        self.BN_2 = keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
             filters //16,
             1,
             1,
-            use_bias=False,
-            kernel_initializer='he_normal',
-            kernel_regularizer=regularizers.l2(5e-4),
+            kernel_initializer='random_normal',
+            activation='relu'
         )
-        self.relu = keras.layers.LeakyReLU(alpha=0.2)
+        self.relu = keras.layers.ReLU()
         self.conv2 = keras.layers.Conv2D(
             filters,
             1,
             1,
-            use_bias=False,
-            kernel_initializer='he_normal',
-            kernel_regularizer=regularizers.l2(5e-4),
+            kernel_initializer='random_normal',
             activation='sigmoid'
         )
 
@@ -65,7 +60,7 @@ class Attention(keras.layers.Layer):
         img_fts2 = self.GAP(img_fts1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
-        img_fts2 = self.conv2(self.relu(self.conv1(img_fts2)))
+        img_fts2 = self.conv2(self.conv1(img_fts2))
         out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
         out = keras.activations.relu(out)
         return out

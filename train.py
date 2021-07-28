@@ -40,8 +40,8 @@ training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=tfa.optimizers.SGDW(
         learning_rate=lr_schedule,
-        # momentum=0.95,
-        weight_decay=1e-4
+        momentum=0.9,
+        weight_decay=1e-5
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]

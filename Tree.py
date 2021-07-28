@@ -1,4 +1,7 @@
 import os
+
+from tensorflow.keras import regularizers
+
 os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
@@ -13,11 +16,8 @@ import config
 class BTree(keras.layers.Layer):
     def __init__(self, inplanes, ratio, afilter, size, pfilter, classes=config.CLASSES_NUM):
         super(BTree, self).__init__()
-        # self.conv_L1 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route1_L1 = Route(inplanes, ratio, channel=afilter)
-        # self.conv1_L2 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route1_L2 = Route(inplanes, ratio, channel=afilter)
-        # self.conv2_L2 = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal')
         self.route2_L2 = Route(inplanes, ratio, channel=afilter)
 
         self.att_1 = Attention(afilter, size)
