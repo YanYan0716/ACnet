@@ -48,4 +48,4 @@ if __name__ == '__main__':
     # labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
     # print(labelPred1.shape)
     # model.save_weights('./123/111', save_format='h5')
-    model.summary()
+    print(model.layers[-1].trainable_variables)
