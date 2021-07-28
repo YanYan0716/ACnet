@@ -62,7 +62,7 @@ for epoch in range(config.MAX_EPOCH):
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (result['loss'].numpy()) + ', ACC: %.2f]' % (
                       result['accuracy'].numpy()*100))
 
-    if epoch % config.EVAL_EPOCH == 0:
+    if (epoch+1) % config.EVAL_EPOCH == 0:
         training.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
