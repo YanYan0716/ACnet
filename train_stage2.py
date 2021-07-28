@@ -15,7 +15,7 @@ from CustomFit import CustomFit
 ds_train = dataset(config.DATA_PATH)
 ds_test = dataset(config.DATA_TEST, train=False)
 
-# model 第一阶段
+# model 第二阶段
 model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=1024,

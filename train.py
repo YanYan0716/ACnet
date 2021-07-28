@@ -33,15 +33,15 @@ loss = myLoss(alpha=1, betha=1.)
 # 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
-    values=[0.01, 0.005, 0.001, 0.0005]# [0.5, 0.1, 0.01, 0.005]
+    values=[0.1, 0.005, 0.001, 0.0005]# [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=tf.optimizers.SGD(
-        learning_rate=lr_schedule,
-        momentum=0.9,
-        # weight_decay=5e-6
+    optimizer=tf.optimizers.Adam(
+    learning_rate=lr_schedule,
+    # momentum=0.9,
+    # weight_decay=5e-6
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
