@@ -59,16 +59,16 @@ for epoch in range(config.MAX_EPOCH):
         if flag % config.LOG_BATCH == 0:
             print(f'stage First: %s' % str(
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
-                  + 'idx: %3d]' % flag + '[Loss:%.4f' % (result['loss'].numpy()) + ', ACC: %.4f]' % (
-                      result['accuracy'].numpy()))
+                  + 'idx: %3d]' % flag + '[Loss:%.4f' % (result['loss'].numpy()) + ', ACC: %.2f]' % (
+                      result['accuracy'].numpy()*100))
 
     if epoch % config.EVAL_EPOCH == 0:
         training.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
         print(
-            f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + '[Loss:%.4f' % (result['loss'].numpy()) + ',ACC: %.4f]' % (
-                result['accuracy'].numpy())
+            f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + '[Loss:%.4f' % (result['loss'].numpy()) + ',ACC: %.2f]' % (
+                result['accuracy'].numpy()*100)
         )
         if result['accuracy'].numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
