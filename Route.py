@@ -17,7 +17,7 @@ import config
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add', 'channel_mul'),
+    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('channel_add', 'channel_mul'),
                  size=config.FTS_SIZE, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
@@ -46,13 +46,14 @@ class GlobalContext(keras.layers.Layer):
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
                 # keras.layers.LayerNormalization(axis=[1, 2, 3], epsilon=1e-5),
-                keras.layers.LeakyReLU(alpha=0.2),
+                # keras.layers.LeakyReLU(alpha=0.2),
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
                     use_bias=False,
                     kernel_initializer='he_normal',
                     kernel_regularizer=regularizers.l2(5e-4),
+                    activation='relu'
                 )
             ])
         else:
