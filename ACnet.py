@@ -29,7 +29,7 @@ def ACnet(
     tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
 
     my_input = backbone.layers[0].input
-    output = backbone.get_layer('block4_conv3').output
+    output = backbone.get_layer('block5_conv3').output
     output = keras.layers.Conv2D(
         afilter,
         1,
