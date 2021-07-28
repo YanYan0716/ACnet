@@ -38,7 +38,7 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
-    optimizer=tf.optimizers.Adam(
+    optimizer=tfa.optimizers.SGDW(
         learning_rate=lr_schedule,
         # momentum=0.95,
         # weight_decay=5e-6
