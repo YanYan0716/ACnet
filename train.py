@@ -41,7 +41,7 @@ training.compile(
     optimizer=tfa.optimizers.SGDW(
         learning_rate=lr_schedule,
         # momentum=0.95,
-        # weight_decay=5e-6
+        weight_decay=1e-4
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
