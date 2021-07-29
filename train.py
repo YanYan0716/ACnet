@@ -33,15 +33,15 @@ loss = myLoss(alpha=1, betha=1.)
 # 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
-    values=[0.02, 0.005, 0.001, 0.0005]# [0.5, 0.1, 0.01, 0.005]
+    values=[0.02, 0.005, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 training = CustomFit(model, acc_metric)
 training.compile(
     optimizer=tfa.optimizers.SGDW(
-    learning_rate=lr_schedule,
-    momentum=0.9,
-    weight_decay=5e-6
+        learning_rate=lr_schedule,
+        momentum=0.9,
+        weight_decay=5e-6
     ),
     loss=loss,
     # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
@@ -60,15 +60,15 @@ for epoch in range(config.MAX_EPOCH):
             print(f'stage First: %s' % str(
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (result['loss'].numpy()) + ', ACC: %.2f]' % (
-                      result['accuracy'].numpy()*100))
+                          result['accuracy'].numpy() * 100))
 
-    if (epoch+1) % config.EVAL_EPOCH == 0:
+    if (epoch + 1) % config.EVAL_EPOCH == 0:
         training.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = training.test_step(data=(img, label))
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + '[Loss:%.4f' % (result['loss'].numpy()) + ',ACC: %.2f]' % (
-                result['accuracy'].numpy()*100)
+                    result['accuracy'].numpy() * 100)
         )
         if result['accuracy'].numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
