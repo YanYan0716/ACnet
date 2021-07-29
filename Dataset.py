@@ -11,6 +11,7 @@ import config
 def readTrainImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.cast(img, tf.float32)
     img = tf.image.resize(img, (config.SIZE, config.SIZE))
     return img, label
 
@@ -18,6 +19,7 @@ def readTrainImg(img_path, label):
 def readTestImg(img_path, label):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.cast(img, tf.float32)
     img = tf.image.resize(img, (config.IMG_SIZE, config.IMG_SIZE))
     img = (img / 255.0)
     return img, label
@@ -41,7 +43,7 @@ def dataset(dataPath, train=True):
         ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         ds_train = ds_train\
             .cache()\
-            .shuffle(6000)\
+            .shuffle(60)\
             .map(readTrainImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .map(augment, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
@@ -57,7 +59,7 @@ def dataset(dataPath, train=True):
 
 
 if __name__ == '__main__':
-    ds_train = dataset(config.DATA_PATH)
+    ds_train = dataset('../CUB_200_2011/aaa.csv')
     for img, label in ds_train:
         print(img.shape)
         print(label)
