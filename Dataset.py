@@ -36,10 +36,9 @@ def augment(img, label):
 
 def dataset(dataPath, train=True):
     df = pd.read_csv(dataPath)
-    file_paths = df['name'].values
-    labels = df['label'].values
-
     if train:
+        file_paths = df['name'].values
+        labels = df['label'].values
         ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         ds_train = ds_train\
             .cache()\
@@ -49,6 +48,8 @@ def dataset(dataPath, train=True):
             .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
             .batch(config.BATCH_SIZE)
     else:
+        file_paths = df['file_name'].values
+        labels = df['label'].values
         ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         ds_train = ds_train\
             .cache()\

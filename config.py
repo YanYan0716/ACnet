@@ -1,12 +1,12 @@
 import tensorflow as tf
-DATA_PATH = '../input/cub-200-2011/train.csv'
-DATA_TEST = '../input/cub-200-2011/test.csv'
-SIZE = 512
-IMG_SIZE = 448
+DATA_PATH = '../input/cifar10/cifar/train.csv'
+DATA_TEST = '../input/cifar10/cifar/test.csv'
+SIZE = 256
+IMG_SIZE = 224
 BATCH_SIZE = 4
-CLASSES_NUM = 200
+CLASSES_NUM = 10
 
-FTS_SIZE = 28
+FTS_SIZE = 14
 MAX_EPOCH = 100
 FIRST_SEAGE = True
 

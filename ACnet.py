@@ -19,7 +19,7 @@ def ACnet(
         classes=200,
         firstStage=True,
 ):
-    backbone = keras.applications.ResNet101(
+    backbone = keras.applications.ResNet50(
         include_top=False,
         weights='imagenet',
         input_shape=input_shape,
@@ -29,7 +29,7 @@ def ACnet(
     tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
 
     my_input = backbone.layers[0].input
-    output = backbone.get_layer('conv4_block23_out').output
+    output = backbone.get_layer('conv4_block6_out').output
     # output = keras.layers.Conv2D(
     #     afilter,
     #     1,
