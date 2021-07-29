@@ -29,6 +29,7 @@ class CustomFit(keras.Model):
 
         training_vars = self.trainable_variables
         grads = tape.gradient(loss, training_vars)
+
         self.optimizer.apply_gradients(zip(grads, training_vars))
         self.acc_metric.update_state(label, pred[-1])
         return {'loss': loss, 'accuracy': self.acc_metric.result()}
