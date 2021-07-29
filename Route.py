@@ -17,7 +17,7 @@ import config
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('channel_add', 'channel_mul'),
+    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add', 'channel_mul'),
                  size=config.FTS_SIZE, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
@@ -36,7 +36,7 @@ class GlobalContext(keras.layers.Layer):
             self.conv_mask = keras.layers.Conv2D(
                 filters=1,
                 kernel_size=1,
-                kernel_initializer='he_normal',
+                kernel_initializer='random_normal',
             )
             self.softmax = keras.layers.Softmax(axis=-1)
         else:
