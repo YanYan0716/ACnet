@@ -10,7 +10,7 @@ import config
 class myLoss(keras.losses.Loss):
     def __init__(self, alpha=0.25, betha=1.):
         super(myLoss, self).__init__()
-        self.loss = SparseCategoricalCrossentropy(from_logits=True)
+        self.loss = SparseCategoricalCrossentropy(from_logits=False)
         self.alpha = alpha
         self.betha = betha
 
