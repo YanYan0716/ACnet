@@ -95,7 +95,6 @@ class Attention(keras.layers.Layer):
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = self.conv2(self.conv1(img_fts2))
-        # out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
         out = img_fts1*img_fts2
         out = keras.activations.relu(out)
         return out
