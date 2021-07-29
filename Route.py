@@ -137,6 +137,7 @@ class Route(keras.layers.Layer):
         self.l2Norm = tf.math.l2_normalize
         self.dense = keras.layers.Dense(
             1,
+            kernel_initializer='glorot_normal',
             activation='sigmoid',
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2

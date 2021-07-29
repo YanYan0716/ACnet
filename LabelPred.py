@@ -25,6 +25,7 @@ class LabelPred(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             classes,
             kernel_regularizer=config.L2,
+            kernel_initializer='glorot_normal',
             # bias_regularizer=config.L2
         )
 
