@@ -27,6 +27,7 @@ class LabelPred(keras.layers.Layer):
             kernel_regularizer=config.L2,
             kernel_initializer='glorot_normal',
             # bias_regularizer=config.L2
+            activation='softmax'
         )
 
     def call(self, inputs, **kwargs):

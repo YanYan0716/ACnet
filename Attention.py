@@ -30,6 +30,7 @@ class Attention(keras.layers.Layer):
             # beta_regularizer=config.L2,
             # gamma_regularizer=config.L2,
         )
+        self.relu = keras.layers.ReLU()
         self.conv_2 = keras.layers.Conv2D(
             filters,
             3,
@@ -48,6 +49,7 @@ class Attention(keras.layers.Layer):
         )
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
+        '''
         self.conv1 = keras.layers.Conv2D(
             filters // 16,
             1,
@@ -57,7 +59,7 @@ class Attention(keras.layers.Layer):
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
-        self.relu = keras.layers.ReLU()
+        
         self.conv2 = keras.layers.Conv2D(
             filters,
             1,
@@ -67,7 +69,22 @@ class Attention(keras.layers.Layer):
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
+        '''
+        self.fc1 = keras.layers.Dense(
+            filters // 16,
+            kernel_initializer='glorot_normal',
+            activation='relu',
+            kernel_regularizer=config.L2,
+            # bias_regularizer=config.L2
+        )
 
+        self.fc2 = keras.layers.Dense(
+            filters,
+            kernel_initializer='glorot_normal',
+            activation='sigmoid',
+            kernel_regularizer=config.L2,
+            # bias_regularizer=config.L2
+        )
         self.ASPP = ASPP(filters, size)
 
     def call(self, inputs):
@@ -76,10 +93,11 @@ class Attention(keras.layers.Layer):
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
 
         img_fts2 = self.GAP(img_fts1)
+        img_fts2 = self.fc2(self.fc1(img_fts2))
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
-        img_fts2 = self.conv2(self.conv1(img_fts2))
-        out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
+        # out = tf.einsum('mijn, mpqn -> mijn', img_fts1, img_fts2)
+        out = img_fts1*img_fts2
         out = keras.activations.relu(out)
         return out
 
