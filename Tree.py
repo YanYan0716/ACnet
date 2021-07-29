@@ -6,6 +6,7 @@ os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
 
+
 from Route import Route
 from Attention import Attention
 from LabelPred import LabelPred
@@ -42,8 +43,8 @@ class BTree(keras.layers.Layer):
         features_result = [[None], [None, None], [None, None, None, None]]
 
         # 第一层Route
-        right_prob1_l1 = self.route1_L1(inputs)
-        left_prob1_l1 = 1 - right_prob1_l1
+        left_prob1_l1 = self.route1_L1(inputs)
+        right_prob1_l1 = 1 - left_prob1_l1
         route_result[0][0], route_result[0][1] = left_prob1_l1, right_prob1_l1
 
         features_result[0][0] = inputs
@@ -53,39 +54,36 @@ class BTree(keras.layers.Layer):
         features_result[1][0], features_result[1][1] = left_fts1_l1, right_fts1_l1
 
         # 第二层Route
-        right_prob1_l2 = self.route1_L2(features_result[1][0])
-        left_prob1_l2 = 1 - right_prob1_l2
-        right_prob2_l2 = self.route2_L2(features_result[1][1])
-        left_prob2_l2 = 1 - right_prob2_l2
-        route_result[1][0], route_result[1][1] = left_prob1_l2 * route_result[0][0], right_prob1_l2 * route_result[0][0]
-        route_result[1][2], route_result[1][3] = left_prob2_l2 * route_result[0][1], right_prob2_l2 * route_result[0][1]
+        left_prob1_l2 = self.route1_L2(features_result[1][0])
+        right_prob1_l2 = 1 - left_prob1_l2
+        left_prob2_l2 = self.route2_L2(features_result[1][1])
+        right_prob2_l2 = 1 - left_prob2_l2
+        route_result[1][0], route_result[1][1] = left_prob1_l2*route_result[0][0], right_prob1_l2*route_result[0][0]
+        route_result[1][2], route_result[1][3] = left_prob2_l2*route_result[0][1], right_prob2_l2*route_result[0][1]
 
         # 第二层attention
         left_fts1_l2 = self.att_8(self.att_4(features_result[1][0]))
         right_fts1_l2 = self.att_6(features_result[1][0])
         features_result[2][0], features_result[2][1] = left_fts1_l2, right_fts1_l2
+
         left_fts2_l2 = self.att_9(self.att_5(features_result[1][1]))
         right_fts2_l2 = self.att_7(features_result[1][1])
         features_result[2][2], features_result[2][3] = left_fts2_l2, right_fts2_l2
 
         # label pred
         labelPred1 = self.p_1(features_result[2][0])
-        AvgLabel = (labelPred1 * route_result[1][0])
+        AvgLabel = (labelPred1*route_result[1][0])
 
         labelPred2 = self.p_2(features_result[2][1])
-        AvgLabel += (labelPred2 * route_result[1][1])
+        AvgLabel += (labelPred2*route_result[1][1])
 
         labelPred3 = self.p_3(features_result[2][2])
-        AvgLabel += (labelPred3 * route_result[1][2])
+        AvgLabel += (labelPred3*route_result[1][2])
 
         labelPred4 = self.p_4(features_result[2][3])
-        AvgLabel += (labelPred4 * route_result[1][3])
+        AvgLabel += (labelPred4*route_result[1][3])
 
-        return tf.math.log(labelPred1 + (1e-12)), \
-               tf.math.log(labelPred2 + (1e-12)), \
-               tf.math.log(labelPred3 + (1e-12)), \
-               tf.math.log(labelPred4 + (1e-12)), \
-               tf.math.log(AvgLabel + (1e-12))
+        return labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel
 
 
 if __name__ == '__main__':
