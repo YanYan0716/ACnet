@@ -25,7 +25,7 @@ class myLoss(keras.losses.Loss):
     def NLLLoss(self, y_true, y_pred):
         y_true = tf.one_hot(y_true, config.CLASSES_NUM)
         # y_pred = tf.nn.log_softmax(y_pred, axis=-1)
-        y_pred = tf.math.log(y_pred+(1e-12))
+        # y_pred = tf.math.log(y_pred+(1e-12))
         loss = tf.einsum('mn, mn -> mn', y_true, y_pred)
         loss = -tf.reduce_mean(tf.reduce_sum(loss, axis=1))
         return loss
