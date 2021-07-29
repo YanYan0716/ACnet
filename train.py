@@ -18,11 +18,11 @@ ds_test = dataset(config.DATA_TEST, train=False)
 # model 第一阶段
 model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
-    inplanes=1024,
+    inplanes=512,
     ratio=1,
-    afilter=1024,
+    afilter=512,
     size=(config.FTS_SIZE, config.FTS_SIZE),
-    pfilter=1024,
+    pfilter=512,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
 )
