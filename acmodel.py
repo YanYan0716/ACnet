@@ -59,15 +59,15 @@ class acmodel(keras.Model):
         grads = tape.gradient(loss, training_vars)
 
         self.optimizer.apply_gradients(zip(grads, training_vars))
-        self.acc_metric.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.acc_metric.result()}
+        self.metric.update_state(label, pred[-1])
+        return {'loss': loss, 'accuracy': self.metrics.result()}
 
     def test_step(self, data):
         img, label = data
         pred = self.model(img, training=False)
         loss = self.loss(label, pred)
-        self.acc_metric.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.acc_metric.result()}
+        self.metrics.update_state(label, pred[-1])
+        return {'loss': loss, 'accuracy': self.metrics.result()}
 
 
     def model(self):

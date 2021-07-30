@@ -45,7 +45,7 @@ model.compile(
         # weight_decay=5e-6,
     ),
     loss=loss,
-    # metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
+    metrics=[tf.keras.metrics.SparseCategoricalAccuracy()]
 )
 
 print('prepared first stage...')
@@ -53,7 +53,7 @@ print('==================================')
 BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
-    model.acc_metric.reset_states()
+    model.reset_metrics()
     for (img, label) in ds_train:
         flag += 1
         result = model.train_step(data=(img, label))
@@ -64,7 +64,7 @@ for epoch in range(config.MAX_EPOCH):
                           result['accuracy'].numpy() * 100))
 
     if (epoch + 1) % config.EVAL_EPOCH == 0:
-        model.acc_metric.reset_states()
+        model.reset_metrics()
         for (img, label) in ds_test:
             result = model.test_step(data=(img, label))
         print(
