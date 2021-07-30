@@ -54,6 +54,7 @@ BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
     model.reset_metrics()
+    model.acc_metric.reset_states()
     for (img, label) in ds_train:
         flag += 1
         result = model.train_step(data=(img, label))
@@ -65,6 +66,7 @@ for epoch in range(config.MAX_EPOCH):
 
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         model.reset_metrics()
+        model.acc_metric.reset_states()
         for (img, label) in ds_test:
             result = model.test_step(data=(img, label))
         print(

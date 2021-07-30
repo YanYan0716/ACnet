@@ -28,6 +28,7 @@ class acmodel(keras.Model):
         if firstStage:
             self.backbone.trainable = False
         self.tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
+        self.acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 
     def call(self, inputs, training=None, mask=None):
         x_ = self.backbone(inputs)
@@ -59,15 +60,15 @@ class acmodel(keras.Model):
         grads = tape.gradient(loss, training_vars)
 
         self.optimizer.apply_gradients(zip(grads, training_vars))
-        self.metric.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.metrics.result()}
+        self.acc_metric.update_state(label, pred[-1])
+        return {'loss': loss, 'accuracy': self.acc_metric.result()}
 
     def test_step(self, data):
         img, label = data
         pred = self.model()(img, training=False)
         loss = self.loss(label, pred)
-        self.metrics.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.metrics.result()}
+        self.acc_metric.update_state(label, pred[-1])
+        return {'loss': loss, 'accuracy': self.acc_metric.result()}
 
     def model(self):
         my_input = self.backbone.layers[0].input
