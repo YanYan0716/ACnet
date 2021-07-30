@@ -15,5 +15,5 @@ INIT_LR = 0.02
 LOG_BATCH = 100
 EVAL_EPOCH = 5
 LOAD_PATH = './model.h5'
-SAVE_PATH = './model/'
+SAVE_PATH = './model.h5'
 L2 = None# tf.keras.regularizers.l2(5e-6)

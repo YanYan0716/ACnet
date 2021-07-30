@@ -25,9 +25,9 @@ model = ACnet(
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
 )
-model.save_weights('./123/', save_format='h5')
+model.save_weights('./123.h5', save_format='h5')
 # print('loading weights...')
-# model.load_weights('wer/')
+# model.load_weights('model')
 # model.trainable = True
 # print('==================================')
 #
