@@ -37,8 +37,8 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     values=[0.0, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
-training = CustomFit(model, acc_metric)
-training.compile(
+# training = CustomFit(model, acc_metric)
+model.compile(
     optimizer=tf.optimizers.SGD(
         learning_rate=lr_schedule,
         # momentum=0.9,
@@ -53,10 +53,10 @@ print('==================================')
 BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
-    training.acc_metric.reset_states()
+    model.acc_metric.reset_states()
     for (img, label) in ds_train:
         flag += 1
-        result = training.train_step(data=(img, label))
+        result = model.train_step(data=(img, label))
         if flag % config.LOG_BATCH == 0:
             print(f'stage First: %s' % str(
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
@@ -64,9 +64,9 @@ for epoch in range(config.MAX_EPOCH):
                           result['accuracy'].numpy() * 100))
 
     if (epoch + 1) % config.EVAL_EPOCH == 0:
-        training.acc_metric.reset_states()
+        model.acc_metric.reset_states()
         for (img, label) in ds_test:
-            result = training.test_step(data=(img, label))
+            result = model.test_step(data=(img, label))
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + '[Loss:%.4f' % (result['loss'].numpy()) + ',ACC: %.2f]' % (
                     result['accuracy'].numpy() * 100)
