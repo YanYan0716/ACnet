@@ -17,7 +17,7 @@ ds_train = dataset(config.DATA_PATH)
 ds_test = dataset(config.DATA_TEST, train=False)
 
 # model 第一阶段
-model = acmodel(
+model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=512,
     ratio=1,
@@ -37,7 +37,7 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     values=[0.0, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
-# training = CustomFit(model, acc_metric)
+training = CustomFit(model, acc_metric)
 model.compile(
     optimizer=tf.optimizers.SGD(
         learning_rate=lr_schedule,
