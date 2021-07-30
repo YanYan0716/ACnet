@@ -26,15 +26,15 @@ model = ACnet(
     firstStage=config.FIRST_SEAGE
 )
 model.save_weights('./123.h5', save_format='h5')
-# print('loading weights...')
-# model.load_weights('model')
-# model.trainable = True
-# print('==================================')
-#
-# acc = 0
-# for (img, label) in ds:
-#     pred = model(img)
-#     pred_index = tf.argmax(pred[-1], axis=-1)
-#     if label[0].numpy() == pred_index:
-#         acc += 1
-# print(acc)
+print('loading weights...')
+model.load_weights('model')
+print('==================================')
+
+acc = 0
+for (img, label) in ds:
+    pred = model(img, training=False)
+    pred_index = tf.argmax(pred[-1], axis=-1)
+    if label[0].numpy() == pred_index:
+        acc += 1
+    break
+print(acc)
