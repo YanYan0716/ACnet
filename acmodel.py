@@ -52,10 +52,10 @@ class acmodel(keras.Model):
         img, label = data
         # 前向传播
         with tf.GradientTape() as tape:
-            pred = self.call(img, training=True)
+            pred = self.model()(img, training=True)
             loss = self.loss(label, pred)
 
-        training_vars = self.trainable_variables
+        training_vars = self.model().trainable_variables
         grads = tape.gradient(loss, training_vars)
 
         self.optimizer.apply_gradients(zip(grads, training_vars))
@@ -64,11 +64,10 @@ class acmodel(keras.Model):
 
     def test_step(self, data):
         img, label = data
-        pred = self.call(img, training=False)
+        pred = self.model()(img, training=False)
         loss = self.loss(label, pred)
         self.metrics.update_state(label, pred[-1])
         return {'loss': loss, 'accuracy': self.metrics.result()}
-
 
     def model(self):
         my_input = self.backbone.layers[0].input
