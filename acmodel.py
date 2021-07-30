@@ -49,27 +49,6 @@ class acmodel(keras.Model):
         self.optimizer = optimizer
         self.loss = loss
 
-    def train_step(self, data):
-        img, label = data
-        # 前向传播
-        with tf.GradientTape() as tape:
-            pred = self.call(img, training=True)
-            loss = self.loss(label, pred)
-
-        training_vars = self.tree.trainable_variables + self.conv.trainable_variables
-        grads = tape.gradient(loss, training_vars)
-
-        self.optimizer.apply_gradients(zip(grads, training_vars))
-        self.acc_metric.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.acc_metric.result()}
-
-    def test_step(self, data):
-        img, label = data
-        pred = self.call(img, training=False)
-        loss = self.loss(label, pred)
-        self.acc_metric.update_state(label, pred[-1])
-        return {'loss': loss, 'accuracy': self.acc_metric.result()}
-
     def model(self):
         my_input = self.backbone.layers[0].input
         model = keras.Model(inputs=my_input, outputs=self.call(my_input))
