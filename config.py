@@ -3,7 +3,7 @@ DATA_PATH = '../input/cifar10/cifar/train.csv'
 DATA_TEST = '../input/cifar10/cifar/test.csv'
 SIZE = 130
 IMG_SIZE = 112
-BATCH_SIZE = 1
+BATCH_SIZE = 16
 CLASSES_NUM = 10
 
 FTS_SIZE = 28
