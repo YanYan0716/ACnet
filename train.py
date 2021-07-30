@@ -10,13 +10,14 @@ from Loss import myLoss
 from ACnet import ACnet
 from Dataset import dataset
 from CustomFit import CustomFit
+from acmodel import acmodel
 
 # dataset
 ds_train = dataset(config.DATA_PATH)
 ds_test = dataset(config.DATA_TEST, train=False)
 
 # model 第一阶段
-model = ACnet(
+model = acmodel(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=512,
     ratio=1,
