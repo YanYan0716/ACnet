@@ -42,7 +42,7 @@ optim = tf.optimizers.SGD(learning_rate=lr_schedule)
 model.compile(
     optimizer=optim,
     loss=myloss,
-    metrics= ['accuracy'],
+    metrics=['accuracy'],
 )
 print('prepared first stage...')
 print('==================================')
@@ -51,7 +51,7 @@ model.fit(
     ds_train,
     epochs=10,
     verbose=2,
-    validation_data=ds_test
+    # validation_data=ds_test
 )
 # for epoch in range(config.MAX_EPOCH):
 #     flag = 0
