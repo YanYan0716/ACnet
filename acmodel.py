@@ -44,7 +44,7 @@ class acmodel(keras.Model):
 
 if __name__ == '__main__':
     img = tf.random.normal((2, 448, 448, 3))
-    model = acmodel()
+    model = acmodel().model()
     labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
     print(labelPred1.shape)
     # model.save_weights('./123/111', save_format='h5')
