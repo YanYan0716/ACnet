@@ -44,6 +44,7 @@ BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
     acc_metric.reset_states()
+    model.trainable = True
     for (img, label) in ds_train:
         flag += 1
         with tf.GradientTape() as tape:
@@ -58,9 +59,11 @@ for epoch in range(config.MAX_EPOCH):
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (loss.numpy()) + ', ACC: %.2f]' % (
                           acc_metric.result().numpy() * 100))
+        break
     acc_metric.reset_states()
     print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
+        model.trainable = False
         for (img, label) in ds_test:
             y_pred = model.predict(img)
             acc_metric.update_state(label, y_pred[-1])
