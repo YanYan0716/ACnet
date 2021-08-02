@@ -59,7 +59,6 @@ for epoch in range(config.MAX_EPOCH):
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (loss.numpy()) + ', ACC: %.2f]' % (
                           acc_metric.result().numpy() * 100))
-            break
     acc_metric.reset_states()
     print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
@@ -72,5 +71,5 @@ for epoch in range(config.MAX_EPOCH):
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
         )
         if acc_metric.result().numpy() > BEST_ACC:
-            model.save_weights(config.SAVE_PATH, save_format='h5')
+            model.save(config.SAVE_PATH, save_format='h5')
             BEST_ACC = acc_metric.result().numpy()
