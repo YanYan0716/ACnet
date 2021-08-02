@@ -36,7 +36,6 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     values=[0.05, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
-training = CustomFit(model, acc_metric)
 optim = tf.optimizers.SGD(learning_rate=lr_schedule)
 
 print('prepared first stage...')
@@ -65,11 +64,10 @@ for epoch in range(config.MAX_EPOCH):
         for (img, label) in ds_test:
             y_pred = model.predict(img)
             # y_pred = model(img, training=True)
-            loss = myloss(label, y_pred)
             acc_metric.update_state(label, y_pred[-1])
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
         )
         if acc_metric.result().numpy() > BEST_ACC:
-            model.save(config.SAVE_PATH, save_format='h5')
+            model.save_weights(config.SAVE_PATH, save_format='h5')
             BEST_ACC = acc_metric.result().numpy()
