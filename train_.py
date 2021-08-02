@@ -60,6 +60,7 @@ for epoch in range(config.MAX_EPOCH):
                           acc_metric.result().numpy() * 100))
 
     acc_metric.reset_states()
+    print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
             y_pred = model(img, training=False)
