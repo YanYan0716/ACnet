@@ -64,6 +64,8 @@ for epoch in range(config.MAX_EPOCH):
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
             y_pred = model(img, training=False)
+            loss = myloss(label, y_pred)
+            print(loss.numpy())
             acc_metric.update_state(label, y_pred[-1])
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
