@@ -34,8 +34,6 @@ class acmodel(keras.Model):
         self.tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
         if firstStage:
             self.backbone.trainable = False
-            self.conv.trainable = True
-            self.tree.trainable = True
 
     def call(self, inputs, training=None, mask=None):
         x_ = self.backbone(inputs)

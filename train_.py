@@ -47,9 +47,9 @@ for epoch in range(config.MAX_EPOCH):
     for (img, label) in ds_train:
         flag += 1
         with tf.GradientTape() as tape:
-            y_pred = model.call(img, training=True)
+            y_pred = model(img, training=True)
             loss = myloss(label, y_pred)
-        gradients = tape.gradient(loss, model.trainable_variables)
+        gradients = tape.gradient(loss, model.trainable_weights)
         optim.apply_gradients(zip(gradients, model.trainable_weights))
         acc_metric.update_state(label, y_pred[-1])
 
