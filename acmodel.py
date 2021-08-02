@@ -28,7 +28,6 @@ class acmodel(keras.Model):
         if firstStage:
             self.backbone.trainable = False
         self.tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
-        self.acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
 
     def call(self, inputs, training=None, mask=None):
         x_ = self.backbone(inputs)
@@ -36,18 +35,6 @@ class acmodel(keras.Model):
         x = self.conv(x)
         out = self.tree(x)
         return out
-
-    def compile(self,
-              optimizer='rmsprop',
-              loss=None,
-              metrics=None,
-              loss_weights=None,
-              weighted_metrics=None,
-              run_eagerly=None,
-              **kwargs):
-        super(acmodel, self).compile()
-        self.optimizer = optimizer
-        self.loss = loss
 
     def model(self):
         my_input = self.backbone.layers[0].input

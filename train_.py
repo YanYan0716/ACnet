@@ -25,7 +25,7 @@ model = acmodel(
     pfilter=512,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
-)
+).model()
 
 # loss
 myloss = myLoss(alpha=1, betha=1.)
