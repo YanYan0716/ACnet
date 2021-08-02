@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow.keras as keras
 
 from Tree import BTree
-
+import config
 
 class acmodel(keras.Model):
     def __init__(self,
@@ -24,10 +24,18 @@ class acmodel(keras.Model):
             weights='imagenet',
             input_shape=input_shape,
         )
-        self.conv = keras.layers.Conv2D(afilter, 1, 1, kernel_initializer='random_normal', activation='relu')
+        self.conv = keras.layers.Conv2D(
+            afilter,
+            1,
+            1,
+            kernel_initializer=config.CONV_INIT,
+            activation='relu'
+        )
+        self.tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
         if firstStage:
             self.backbone.trainable = False
-        self.tree = BTree(inplanes, ratio, afilter, size, pfilter, classes)
+            self.conv.trainable = True
+            self.tree.trainable = True
 
     def call(self, inputs, training=None, mask=None):
         x_ = self.backbone(inputs)
@@ -48,5 +56,5 @@ if __name__ == '__main__':
     # labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
     # print(labelPred1.shape)
     # model.save_weights('./123/111', save_format='h5')
-    model.save('123')
+    # model.save('123')
     # print(model.layers[-1].trainable_variables)

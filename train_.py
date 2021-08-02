@@ -44,13 +44,12 @@ BEST_ACC = 0
 for epoch in range(config.MAX_EPOCH):
     flag = 0
     acc_metric.reset_states()
-    model.trainable = True
     for (img, label) in ds_train:
         flag += 1
         with tf.GradientTape() as tape:
-            y_pred = model(img, training=True)
+            y_pred = model.call(img, training=True)
             loss = myloss(label, y_pred)
-        gradients = tape.gradient(loss, model.trainable_weights)
+        gradients = tape.gradient(loss, model.trainable_variables)
         optim.apply_gradients(zip(gradients, model.trainable_weights))
         acc_metric.update_state(label, y_pred[-1])
 
@@ -63,7 +62,6 @@ for epoch in range(config.MAX_EPOCH):
     acc_metric.reset_states()
     print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
-        model.trainable = False
         for (img, label) in ds_test:
             y_pred = model.predict(img)
             acc_metric.update_state(label, y_pred[-1])
@@ -73,3 +71,4 @@ for epoch in range(config.MAX_EPOCH):
         if acc_metric.result().numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
             BEST_ACC = acc_metric.result().numpy()
+        acc_metric.reset_states()
