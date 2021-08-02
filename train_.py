@@ -60,10 +60,14 @@ for epoch in range(config.MAX_EPOCH):
                           acc_metric.result().numpy() * 100))
             break
     acc_metric.reset_states()
+    test_flag = 0
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
+            test_flag += 1
             y_pred = model.predict(img)
             acc_metric.update_state(label, y_pred[-1])
+            if test_flag >= 5000:
+                break
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
         )
