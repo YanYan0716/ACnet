@@ -14,7 +14,7 @@ class LabelPred(keras.layers.Layer):
                 filters,
                 1,
                 1,
-                kernel_initializer='random_normal',
+                kernel_initializer=config.CONV_INIT,
                 kernel_regularizer=config.L2,
                 # bias_regularizer=config.L2
             ),
@@ -25,7 +25,7 @@ class LabelPred(keras.layers.Layer):
         self.dense = keras.layers.Dense(
             classes,
             kernel_regularizer=config.L2,
-            kernel_initializer='glorot_normal',
+            kernel_initializer=config.DENSE_INIT,
             # bias_regularizer=config.L2
             activation='softmax'
         )

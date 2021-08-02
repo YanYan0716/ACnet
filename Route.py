@@ -36,7 +36,7 @@ class GlobalContext(keras.layers.Layer):
             self.conv_mask = keras.layers.Conv2D(
                 filters=1,
                 kernel_size=1,
-                kernel_initializer='random_normal',
+                kernel_initializer=config.CONV_INIT,
             )
             self.softmax = keras.layers.Softmax(axis=-1)
         else:
@@ -53,7 +53,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
+                    kernel_initializer=config.CONV_INIT,
                     kernel_regularizer=config.L2,
                     # bias_regularizer=config.L2
                 )
@@ -65,7 +65,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.planes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
+                    kernel_initializer=config.CONV_INIT,
                     kernel_regularizer=config.L2,
                     # bias_regularizer=config.L2
                 ),
@@ -79,7 +79,7 @@ class GlobalContext(keras.layers.Layer):
                 keras.layers.Conv2D(
                     self.inplanes,
                     kernel_size=1,
-                    kernel_initializer='random_normal',
+                    kernel_initializer=config.CONV_INIT,
                     activation='sigmoid',
                     kernel_regularizer=config.L2,
                     # bias_regularizer=config.L2
@@ -128,7 +128,7 @@ class Route(keras.layers.Layer):
             channel,
             1,
             1,
-            kernel_initializer='random_normal',
+            kernel_initializer=config.CONV_INIT,
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
@@ -137,7 +137,7 @@ class Route(keras.layers.Layer):
         self.l2Norm = tf.math.l2_normalize
         self.dense = keras.layers.Dense(
             1,
-            kernel_initializer='glorot_normal',
+            kernel_initializer=config.DENSE_INIT,
             activation='sigmoid',
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2

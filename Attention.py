@@ -20,7 +20,7 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             # use_bias=False,
-            kernel_initializer='random_normal',
+            kernel_initializer=config.CONV_INIT,
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
@@ -37,7 +37,7 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             # use_bias=False,
-            kernel_initializer='random_normal',
+            kernel_initializer=config.CONV_INIT,
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
@@ -53,7 +53,7 @@ class Attention(keras.layers.Layer):
             filters // 4,
             1,
             1,
-            kernel_initializer='random_normal',
+            kernel_initializer=config.CONV_INIT,
             activation='relu',
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
@@ -63,7 +63,7 @@ class Attention(keras.layers.Layer):
             filters,
             1,
             1,
-            kernel_initializer='random_normal',
+            kernel_initializer=config.CONV_INIT,
             activation='sigmoid',
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2

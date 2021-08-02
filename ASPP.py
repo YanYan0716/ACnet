@@ -7,6 +7,8 @@ import tensorflow as tf
 import tensorflow.keras as keras
 
 
+import config
+
 class ASPP(keras.layers.Layer):
     def __init__(self, filters, size):
         super(ASPP, self).__init__()
@@ -15,7 +17,7 @@ class ASPP(keras.layers.Layer):
             filters,
             1,
             1,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
         self.upsample = keras.layers.UpSampling2D(size, interpolation='bilinear')
 
@@ -23,7 +25,7 @@ class ASPP(keras.layers.Layer):
             filters,
             1,
             1,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
         self.atrous_block6 = keras.layers.Conv2D(
             filters,
@@ -31,7 +33,7 @@ class ASPP(keras.layers.Layer):
             1,
             padding='same',
             dilation_rate=6,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
         self.atrous_block12 = keras.layers.Conv2D(
             filters,
@@ -39,7 +41,7 @@ class ASPP(keras.layers.Layer):
             1,
             padding='same',
             dilation_rate=12,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
         self.atrous_block18 = keras.layers.Conv2D(
             filters,
@@ -47,14 +49,14 @@ class ASPP(keras.layers.Layer):
             1,
             padding='same',
             dilation_rate=18,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
 
         self.conv_1_output = keras.layers.Conv2D(
             filters,
             1,
             1,
-            kernel_initializer='random_normal'
+            kernel_initializer=config.CONV_INIT
         )
 
     def call(self, inputs):
