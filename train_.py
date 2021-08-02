@@ -58,7 +58,7 @@ for epoch in range(config.MAX_EPOCH):
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (loss.numpy()) + ', ACC: %.2f]' % (
                           acc_metric.result().numpy() * 100))
-        break
+            break
     acc_metric.reset_states()
     print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
