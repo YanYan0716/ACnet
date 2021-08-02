@@ -59,15 +59,13 @@ for epoch in range(config.MAX_EPOCH):
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (loss.numpy()) + ', ACC: %.2f]' % (
                           acc_metric.result().numpy() * 100))
-            break
 
     acc_metric.reset_states()
     print('testing ...')
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
-            y_pred = model(img, training=False)
+            y_pred = model(img, training=True)
             loss = myloss(label, y_pred)
-            print(loss.numpy())
             acc_metric.update_state(label, y_pred[-1])
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)

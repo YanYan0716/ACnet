@@ -55,7 +55,7 @@ def dataset(dataPath, train=True):
             .cache()\
             .map(readTestImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
-            .batch(4)
+            .batch(1)
     return ds_train
 
 
