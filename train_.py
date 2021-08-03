@@ -76,7 +76,7 @@ for epoch in range(config.MAX_EPOCH):
             test_flag += 1
             y_pred = model(img, training=False)
             acc_metric.update_state(label, y_pred[-1])
-            if test_flag >= 5000:
+            if test_flag >= 3000:
                 break
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
