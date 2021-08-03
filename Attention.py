@@ -27,6 +27,7 @@ class Attention(keras.layers.Layer):
         self.BN_1 = keras.layers.BatchNormalization(
             epsilon=1e-5,
             momentum=0.9,
+            trainable=True,
             # beta_regularizer=config.L2,
             # gamma_regularizer=config.L2,
         )
@@ -44,6 +45,7 @@ class Attention(keras.layers.Layer):
         self.BN_2 = keras.layers.BatchNormalization(
             epsilon=1e-5,
             momentum=0.9,
+            trainable=True
             # beta_regularizer=config.L2,
             # gamma_regularizer=config.L2,
         )

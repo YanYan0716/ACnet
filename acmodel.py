@@ -50,7 +50,16 @@ class acmodel(keras.Model):
 
 if __name__ == '__main__':
     # img = tf.random.normal((2, 448, 448, 3))
-    model = acmodel().model()
+    model = acmodel(
+        input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
+        inplanes=512,
+        ratio=1,
+        afilter=512,
+        size=(config.FTS_SIZE, config.FTS_SIZE),
+        pfilter=512,
+        classes=config.CLASSES_NUM,
+        firstStage=config.FIRST_SEAGE
+    ).model()
     # labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel = model(img)
     # print(labelPred1.shape)
     # model.save_weights('./123/111', save_format='h5')
