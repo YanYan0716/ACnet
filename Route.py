@@ -17,7 +17,7 @@ import config
 
 
 class GlobalContext(keras.layers.Layer):
-    def __init__(self, inplanes, ratio, pooling_type='att', fusion_types=('channel_add', 'channel_mul'),
+    def __init__(self, inplanes, ratio, pooling_type='avg', fusion_types=('channel_add', 'channel_mul'),
                  size=config.FTS_SIZE, channel=1024):
         super(GlobalContext, self).__init__()
         assert pooling_type in ['avg', 'att']
