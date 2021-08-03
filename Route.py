@@ -45,7 +45,6 @@ class GlobalContext(keras.layers.Layer):
             self.channel_add_conv = keras.Sequential([
                 keras.layers.LayerNormalization(
                     axis=[1, 2, 3],
-                    # axis=3,
                     epsilon=1e-5,
                     # beta_regularizer=config.L2,
                     # gamma_regularizer=config.L2,
@@ -72,7 +71,6 @@ class GlobalContext(keras.layers.Layer):
                 ),
                 keras.layers.LayerNormalization(
                     axis=[1, 2, 3],
-                    # axis=3,
                     epsilon=1e-5,
                     trainable=True,
                     # beta_regularizer=config.L2,
