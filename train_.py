@@ -60,7 +60,7 @@ for epoch in range(config.MAX_EPOCH):
             loss = myloss(label, y_pred)
         gradients = tape.gradient(loss, model.trainable_weights)
         optim.apply_gradients(zip(gradients, model.trainable_weights))
-        acc_metric.update_state(label, y_pred[-1])
+        acc_metric.update_state(label, y_pred)
 
         if flag % config.LOG_BATCH == 0:
             print(f'stage First: %s' % str(
@@ -77,7 +77,7 @@ for epoch in range(config.MAX_EPOCH):
         for (img, label) in ds_test:
             test_flag += 1
             y_pred = model(img, training=False)
-            acc_metric.update_state(label, y_pred[-1])
+            acc_metric.update_state(label, y_pred)
             if test_flag >= 3000:
                 break
         print(
