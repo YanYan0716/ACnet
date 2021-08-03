@@ -53,6 +53,7 @@ def dataset(dataPath, train=True):
         ds_train = tf.data.Dataset.from_tensor_slices((file_paths, labels))
         ds_train = ds_train\
             .cache()\
+            .shuffle(10000)\
             .map(readTestImg, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
             .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)\
             .batch(1)
