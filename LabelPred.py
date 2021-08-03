@@ -13,6 +13,8 @@ class LabelPred(keras.layers.Layer):
                 momentum=0.9,
                 epsilon=1e-5,
                 trainable=True,
+                scale=True,
+                center=True
             ),
             keras.layers.Conv2D(
                 filters,
