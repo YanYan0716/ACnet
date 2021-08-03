@@ -56,8 +56,8 @@ for epoch in range(config.MAX_EPOCH):
         with tf.GradientTape() as tape:
             y_pred = model(img, training=True)
             loss = myloss(label, y_pred)
-        gradients = tape.gradient(loss, model.trainable_weights)
-        optim.apply_gradients(zip(gradients, model.trainable_weights))
+        gradients = tape.gradient(loss, model.trainable_variables)
+        optim.apply_gradients(zip(gradients, model.trainable_variables))
         acc_metric.update_state(label, y_pred[-1])
 
         if flag % config.LOG_BATCH == 0:
@@ -74,7 +74,6 @@ for epoch in range(config.MAX_EPOCH):
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
             test_flag += 1
-            model.layers[-1].trainable = False
             y_pred = model(img, training=False)
             acc_metric.update_state(label, y_pred[-1])
             if test_flag >= 5000:

@@ -64,4 +64,3 @@ if __name__ == '__main__':
     # print(labelPred1.shape)
     # model.save_weights('./123/111', save_format='h5')
     # model.save('123')
-    # print(model.layers[-1].trainable_variables)
