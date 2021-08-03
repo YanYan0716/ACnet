@@ -72,7 +72,7 @@ for epoch in range(config.MAX_EPOCH):
     acc_metric.reset_states()
     test_flag = 0
     if (epoch + 1) % config.EVAL_EPOCH == 0:
-        for (img, label) in ds_test:
+        for (img, label) in ds_train:
             test_flag += 1
             y_pred = model(img, training=False)
             acc_metric.update_state(label, y_pred[-1])
