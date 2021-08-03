@@ -9,11 +9,11 @@ class LabelPred(keras.layers.Layer):
     def __init__(self, filters, classes):
         super(LabelPred, self).__init__()
         self.net = keras.Sequential([
-            keras.layers.BatchNormalization(
-                momentum=0.9,
-                epsilon=1e-5,
-                trainable=True,
-            ),
+            # keras.layers.BatchNormalization(
+            #     momentum=0.9,
+            #     epsilon=1e-5,
+            #     trainable=True,
+            # ),
             keras.layers.Conv2D(
                 filters,
                 1,

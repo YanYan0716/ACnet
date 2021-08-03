@@ -43,13 +43,13 @@ class GlobalContext(keras.layers.Layer):
             self.avg_pool = keras.layers.GlobalAveragePooling2D()
         if 'channel_add' in fusion_types:
             self.channel_add_conv = keras.Sequential([
-                keras.layers.LayerNormalization(
-                    axis=[1, 2, 3],
-                    epsilon=1e-5,
-                    trainable=True
-                    # beta_regularizer=config.L2,
-                    # gamma_regularizer=config.L2,
-                ),
+                # keras.layers.LayerNormalization(
+                #     axis=[1, 2, 3],
+                #     epsilon=1e-5,
+                #     trainable=True
+                #     # beta_regularizer=config.L2,
+                #     # gamma_regularizer=config.L2,
+                # ),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
@@ -70,13 +70,13 @@ class GlobalContext(keras.layers.Layer):
                     kernel_regularizer=config.L2,
                     # bias_regularizer=config.L2
                 ),
-                keras.layers.LayerNormalization(
-                    axis=[1, 2, 3],
-                    epsilon=1e-5,
-                    trainable=True,
-                    # beta_regularizer=config.L2,
-                    # gamma_regularizer=config.L2,
-                ),
+                # keras.layers.LayerNormalization(
+                #     axis=[1, 2, 3],
+                #     epsilon=1e-5,
+                #     trainable=True,
+                #     # beta_regularizer=config.L2,
+                #     # gamma_regularizer=config.L2,
+                # ),
                 keras.layers.ReLU(),
                 keras.layers.Conv2D(
                     self.inplanes,
