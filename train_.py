@@ -33,7 +33,7 @@ myloss = myLoss(alpha=1, betha=1.)
 # 分段衰减学习率
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[20, 50, 70],
-    values=[0.03, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
+    values=[0.3, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
