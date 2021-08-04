@@ -25,11 +25,11 @@ class Attention(keras.layers.Layer):
             # bias_regularizer=config.L2
         )
         self.BN_1 = keras.layers.BatchNormalization(
-            # epsilon=1e-5,
-            # momentum=0.9,
+            epsilon=1e-5,
+            momentum=0.001,
             # trainable=True,
             # scale=True,
-            # center=True
+            # center=True,
             # beta_regularizer=config.L2,
             # gamma_regularizer=config.L2,
         )
@@ -45,11 +45,11 @@ class Attention(keras.layers.Layer):
             # bias_regularizer=config.L2
         )
         self.BN_2 = keras.layers.BatchNormalization(
-            # epsilon=1e-5,
-            # momentum=0.9,
+            epsilon=1e-5,
+            momentum=0.001,
             # trainable=True,
             # scale=True,
-            # center=True
+            # center=True,
             # beta_regularizer=config.L2,
             # gamma_regularizer=config.L2,
         )

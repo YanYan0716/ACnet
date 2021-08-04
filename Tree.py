@@ -6,7 +6,6 @@ os.environ['TFF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import tensorflow.keras as keras
 
-
 from Route import Route
 from Attention import Attention
 from LabelPred import LabelPred
@@ -58,8 +57,8 @@ class BTree(keras.layers.Layer):
         right_prob1_l2 = 1 - left_prob1_l2
         left_prob2_l2 = self.route2_L2(features_result[1][1])
         right_prob2_l2 = 1 - left_prob2_l2
-        route_result[1][0], route_result[1][1] = left_prob1_l2*route_result[0][0], right_prob1_l2*route_result[0][0]
-        route_result[1][2], route_result[1][3] = left_prob2_l2*route_result[0][1], right_prob2_l2*route_result[0][1]
+        route_result[1][0], route_result[1][1] = left_prob1_l2 * route_result[0][0], right_prob1_l2 * route_result[0][0]
+        route_result[1][2], route_result[1][3] = left_prob2_l2 * route_result[0][1], right_prob2_l2 * route_result[0][1]
 
         # 第二层attention
         left_fts1_l2 = self.att_8(self.att_4(features_result[1][0]))
@@ -72,16 +71,16 @@ class BTree(keras.layers.Layer):
 
         # label pred
         labelPred1 = self.p_1(features_result[2][0])
-        AvgLabel = (labelPred1*route_result[1][0])
+        AvgLabel = (labelPred1 * route_result[1][0])
 
         labelPred2 = self.p_2(features_result[2][1])
-        AvgLabel += (labelPred2*route_result[1][1])
+        AvgLabel += (labelPred2 * route_result[1][1])
 
         labelPred3 = self.p_3(features_result[2][2])
-        AvgLabel += (labelPred3*route_result[1][2])
+        AvgLabel += (labelPred3 * route_result[1][2])
 
         labelPred4 = self.p_4(features_result[2][3])
-        AvgLabel += (labelPred4*route_result[1][3])
+        AvgLabel += (labelPred4 * route_result[1][3])
 
         # return labelPred1, labelPred2, labelPred3, labelPred4, AvgLabel
         return AvgLabel
@@ -90,5 +89,7 @@ class BTree(keras.layers.Layer):
 if __name__ == '__main__':
     img = tf.random.normal((2, 14, 14, 1024))
     tree = BTree(inplanes=1024, ratio=1, afilter=1024, size=(14, 14), pfilter=1024, classes=200)
-    y = tree(img)
-    print(y[0])
+    # y = tree(img)
+    # print(y[0])
+    tree.trainable = True
+    print(tree.p_2.net.layers[0].name)

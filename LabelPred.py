@@ -10,8 +10,8 @@ class LabelPred(keras.layers.Layer):
         super(LabelPred, self).__init__()
         self.net = keras.Sequential([
             keras.layers.BatchNormalization(
-                # momentum=0.9,
-                # epsilon=1e-5,
+                momentum=0.001,
+                epsilon=1e-5,
                 # trainable=True,
                 # scale=True,
                 # center=True
