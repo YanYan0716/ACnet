@@ -22,11 +22,12 @@ class Attention(keras.layers.Layer):
             # use_bias=False,
             kernel_initializer=config.CONV_INIT,
             kernel_regularizer=config.L2,
+            activation='relu'
             # bias_regularizer=config.L2
         )
         self.BN_1 = keras.layers.BatchNormalization(
             epsilon=1e-5,
-            momentum=0.001,
+            momentum=0.5,
             # trainable=True,
             # scale=True,
             # center=True,
@@ -40,13 +41,14 @@ class Attention(keras.layers.Layer):
             1,
             padding='same',
             # use_bias=False,
+            activation='relu',
             kernel_initializer=config.CONV_INIT,
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
         self.BN_2 = keras.layers.BatchNormalization(
             epsilon=1e-5,
-            momentum=0.001,
+            momentum=0.5,
             # trainable=True,
             # scale=True,
             # center=True,
@@ -64,7 +66,15 @@ class Attention(keras.layers.Layer):
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
-        
+        self.BN_3 = keras.layers.BatchNormalization(
+            epsilon=1e-5,
+            momentum=0.5,
+            # trainable=True,
+            # scale=True,
+            # center=True,
+            # beta_regularizer=config.L2,
+            # gamma_regularizer=config.L2,
+        )
         self.conv2 = keras.layers.Conv2D(
             filters,
             1,
@@ -78,15 +88,15 @@ class Attention(keras.layers.Layer):
 
     def call(self, inputs):
         # img_fts1 = self.ASPP(inputs)
-        img_fts1 = self.relu(self.BN_1(self.conv_1(inputs)))
+        # img_fts1 = self.relu(self.BN_1(self.conv_1(inputs)))
+        # img_fts1 = self.BN_2(self.conv_2(img_fts1))
+        img_fts1 = self.BN_1(self.conv_1(inputs))
         img_fts1 = self.BN_2(self.conv_2(img_fts1))
-        # img_fts1 = self.relu(self.conv_1(inputs))
-        # img_fts1 = self.conv_2(img_fts1)
 
         img_fts2 = self.GAP(img_fts1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
-        img_fts2 = self.conv2(self.conv1(img_fts2))
+        img_fts2 = self.conv2(self.BN_3(self.conv1(img_fts2)))
         out = img_fts1*img_fts2
         out = keras.activations.relu(out)
         return out
