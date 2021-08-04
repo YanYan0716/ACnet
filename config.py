@@ -16,6 +16,6 @@ LOG_BATCH = 100
 EVAL_EPOCH = 1
 LOAD_PATH = './model.h5'
 SAVE_PATH = './model.h5'
-L2 = None #tf.keras.regularizers.l2(5e-6)
+L2 = tf.keras.regularizers.l2(5e-6)
 CONV_INIT = 'glorot_normal'
 DENSE_INIT = 'glorot_normal'
