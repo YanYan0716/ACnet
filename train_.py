@@ -37,7 +37,7 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
 )
 
 acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
-optim = tf.optimizers.SGD(learning_rate=lr_schedule)
+optim = tf.optimizers.Adam(learning_rate=lr_schedule)
 
 # model.compile(
 #     optimizer=optim,
