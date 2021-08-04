@@ -24,15 +24,15 @@ class Attention(keras.layers.Layer):
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
-        self.BN_1 = keras.layers.BatchNormalization(
-            epsilon=1e-5,
-            momentum=0.9,
-            trainable=True,
-            scale=True,
-            center=True
-            # beta_regularizer=config.L2,
-            # gamma_regularizer=config.L2,
-        )
+        # self.BN_1 = keras.layers.BatchNormalization(
+        #     epsilon=1e-5,
+        #     momentum=0.9,
+        #     trainable=True,
+        #     scale=True,
+        #     center=True
+        #     # beta_regularizer=config.L2,
+        #     # gamma_regularizer=config.L2,
+        # )
         self.relu = keras.layers.ReLU()
         self.conv_2 = keras.layers.Conv2D(
             filters,
@@ -44,15 +44,15 @@ class Attention(keras.layers.Layer):
             kernel_regularizer=config.L2,
             # bias_regularizer=config.L2
         )
-        self.BN_2 = keras.layers.BatchNormalization(
-            epsilon=1e-5,
-            momentum=0.9,
-            trainable=True,
-            scale=True,
-            center=True
-            # beta_regularizer=config.L2,
-            # gamma_regularizer=config.L2,
-        )
+        # self.BN_2 = keras.layers.BatchNormalization(
+        #     epsilon=1e-5,
+        #     momentum=0.9,
+        #     trainable=True,
+        #     scale=True,
+        #     center=True
+        #     # beta_regularizer=config.L2,
+        #     # gamma_regularizer=config.L2,
+        # )
 
         self.GAP = keras.layers.GlobalAveragePooling2D()
         self.conv1 = keras.layers.Conv2D(
@@ -78,10 +78,10 @@ class Attention(keras.layers.Layer):
 
     def call(self, inputs):
         # img_fts1 = self.ASPP(inputs)
-        img_fts1 = self.relu(self.BN_1(self.conv_1(inputs)))
-        img_fts1 = self.BN_2(self.conv_2(img_fts1))
-        # img_fts1 = self.relu(self.conv_1(inputs))
-        # img_fts1 = self.conv_2(img_fts1)
+        # img_fts1 = self.relu(self.BN_1(self.conv_1(inputs)))
+        # img_fts1 = self.BN_2(self.conv_2(img_fts1))
+        img_fts1 = self.relu(self.conv_1(inputs))
+        img_fts1 = self.conv_2(img_fts1)
 
         img_fts2 = self.GAP(img_fts1)
         img_fts2 = tf.expand_dims(img_fts2, axis=1)
