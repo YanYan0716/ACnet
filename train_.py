@@ -47,7 +47,8 @@ lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     values=[0.05, 0.01, 0.001, 0.0005]  # [0.5, 0.1, 0.01, 0.005]
 )
 
-acc_metric = keras.metrics.SparseCategoricalAccuracy(name='accuracy')
+train_metric = keras.metrics.SparseCategoricalAccuracy()
+val_metric = keras.metrics.SparseCategoricalAccuracy()
 optim = tf.optimizers.SGD(learning_rate=lr_schedule)
 
 # model.compile(
@@ -63,7 +64,7 @@ BEST_ACC = 0
 
 for epoch in range(config.MAX_EPOCH):
     flag = 0
-    acc_metric.reset_states()
+    train_metric.reset_states()
     for (img, label) in ds_train:
         flag += 1
         with tf.GradientTape() as tape:
@@ -71,23 +72,23 @@ for epoch in range(config.MAX_EPOCH):
             loss = myloss(label, y_pred)
         gradients = tape.gradient(loss, model.trainable_weights)
         optim.apply_gradients(zip(gradients, model.trainable_weights))
-        acc_metric.update_state(label, y_pred)
+        train_metric.update_state(label, y_pred)
 
         if flag % config.LOG_BATCH == 0:
             print(f'stage First: %s' % str(
                 config.FIRST_SEAGE) + '    [max_epoch: %3d]' % config.MAX_EPOCH + '[epoch:%3d/' % (epoch + 1) \
                   + 'idx: %4d]' % flag + '[Loss:%.4f' % (loss.numpy()) + ', ACC: %.2f]' % (
-                          acc_metric.result().numpy() * 100))
+                          train_metric.result().numpy() * 100))
 
-    acc_metric.reset_states()
+    train_metric.reset_states()
     if (epoch + 1) % config.EVAL_EPOCH == 0:
         for (img, label) in ds_test:
             y_pred = model(img, training=False)
-            acc_metric.update_state(label, y_pred)
+            val_metric.update_state(label, y_pred)
         print(
             f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
         )
-        if acc_metric.result().numpy() > BEST_ACC:
+        if val_metric.result().numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
-            BEST_ACC = acc_metric.result().numpy()
-        acc_metric.reset_states()
+            BEST_ACC = val_metric.result().numpy()
+        val_metric.reset_states()
