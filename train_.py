@@ -86,7 +86,7 @@ for epoch in range(config.MAX_EPOCH):
             y_pred = model(img, training=False)
             val_metric.update_state(label, y_pred)
         print(
-            f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (acc_metric.result().numpy() * 100)
+            f'[testing ...]' + '[epoch:%3d/' % (epoch + 1) + ',ACC: %.2f]' % (val_metric.result().numpy() * 100)
         )
         if val_metric.result().numpy() > BEST_ACC:
             model.save_weights(config.SAVE_PATH, save_format='h5')
