@@ -10,13 +10,24 @@ from Loss import myLoss
 from Dataset import dataset
 from CustomFit import CustomFit
 from acmodel import acmodel
+from ACnet import ACnet
 
 # dataset
 ds_train = dataset(config.DATA_PATH)
 ds_test = dataset(config.DATA_TEST, train=False)
 
 # model 第一阶段
-model = acmodel(
+# model = acmodel(
+#     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
+#     inplanes=512,
+#     ratio=1,
+#     afilter=512,
+#     size=(config.FTS_SIZE, config.FTS_SIZE),
+#     pfilter=512,
+#     classes=config.CLASSES_NUM,
+#     firstStage=config.FIRST_SEAGE
+# ).model()
+model = ACnet(
     input_shape=(config.IMG_SIZE, config.IMG_SIZE, 3),
     inplanes=512,
     ratio=1,
@@ -25,7 +36,7 @@ model = acmodel(
     pfilter=512,
     classes=config.CLASSES_NUM,
     firstStage=config.FIRST_SEAGE
-).model()
+)
 
 # loss
 myloss = myLoss(alpha=1, betha=1.)
