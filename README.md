@@ -16,3 +16,10 @@
  
  https://github.com/FlyingMoon-GitHub/ACNet
  
+ note:
+ ACnet.jupyter中是TPU版本，可直接执行，详细介绍在.jupyter中
+ 
+ .py版本是编写的初版，可能有小的问题，可参照TPU修改
+ 
+ 
+ 
